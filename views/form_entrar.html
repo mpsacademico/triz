@@ -1,0 +1,13 @@
+{% extends "inc/base.html" %}
+
+{% block title %}Entrar{% endblock %}
+
+{% block main %}
+<h1>Entrar</h1>
+<form method="POST" action="/entrar">
+	{% if erros is defined %}{{ erros.0 }}{% endif %}
+	<input type="email" name="email" id="email" placeholder="E-mail" required>		
+	<input type="password" name="senha" id="senha" placeholder="Senha" required>
+	<input type="submit" id="entrar" value="Entrar no Triz">		
+</form>	
+{% endblock %}

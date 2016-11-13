@@ -1,0 +1,109 @@
+﻿<?php
+
+date_default_timezone_set("America/Sao_Paulo");
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+$app = new Silex\Application();
+
+$app['debug'] = true; //ativado apenas em ambiente de desenvolvimento
+
+$app->register(new Silex\Provider\SessionServiceProvider());
+
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../views',
+));
+$app['twig']->addGlobal('static', 'http://localhost/triz/static'); //armazenamento de recursos estáticos
+$app['twig']->addGlobal('ducs', 'http://localhost/triz/ducs'); //serviço de conteúdo de usuário
+
+/*$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+$app['swiftmailer.options'] = array(
+    'host' => 'smtp.gmail.com',
+    'port' => 587,
+	'username' => 'trizmps@gmail.com',
+	'password' => 'g_aca:2014-1.mpT',
+	'encryption' => 'tls'
+);*/
+
+
+
+require_once __DIR__.'/../src/conexao.php';
+require_once __DIR__.'/../src/autenticacao.php';
+
+$app->mount('/conta', require 'conta.php');
+
+$app->match('/', function () use ($app) {
+    return $app['twig']->render('page_inicio.html');
+});
+
+$app->match('/entrar', function (Request $request) use ($app) {		
+	if($_SERVER['REQUEST_METHOD']=='POST'){
+		$email = $_POST['email'];
+		$senha = $_POST['senha'];
+		try {
+			$conn = nconn();
+			$stmt = $conn->prepare("SELECT salt_senha FROM tz_conta_usuario WHERE email = :email;");
+			$stmt->bindParam(':email', $email);
+			$stmt->execute();			
+			if($stmt->rowCount()==0){	
+				$e[] = "O e-mail não foi reconhecido";				
+			}else{
+				$rs = $stmt->fetch(PDO::FETCH_ASSOC);
+				$hash_senha = hash('sha512', $senha.$rs['salt_senha']);
+				$stmt = $conn->prepare("SELECT id_conta_usuario, nome, sobrenome, email, login, salt_conta FROM tz_conta_usuario WHERE email = :email AND senha = :senha;");
+				$stmt->bindParam(':email', $email);
+				$stmt->bindParam(':senha', $hash_senha);
+				$stmt->execute();			
+				if($stmt->rowCount()==1){	
+					$rs = $stmt->fetch(PDO::FETCH_ASSOC);
+					$npu = md5($rs['id_conta_usuario']);
+					$app['session']->set('conta_usuario', array('id_conta_usuario' => $rs['id_conta_usuario'], 'nome'=> $rs['nome'], 'sobrenome' => $rs['sobrenome'], 'email' => $rs['email'], 'npu' => $npu));
+					return $app->redirect('/mural');
+				}else{
+					$e[] = "O e-mail e a senha não coincidem";
+				}
+			}
+		}
+		catch(PDOException $e) {
+			echo "Erro: " . $e->getMessage();
+		}
+		$conn = null;
+		return $app['twig']->render('form_entrar.html',array('erros' => $e));
+	}
+	return $app['twig']->render('form_entrar.html');
+})
+->before(function() use ($app){
+	if(!(null === $app['session']->get('conta_usuario'))){
+        return $app->redirect('/mural');
+    }
+});
+
+$app->match('/sair', function () use ($app) {
+	$app['session']->clear();
+	return $app->redirect('/');
+});
+
+$app->match('/mural', function () use ($app) {
+	$usuario = $app['session']->get('conta_usuario');
+    return $app['twig']->render('page_mural.html');
+})
+->before($protector);
+
+$app->match('/feedback', function (Request $request) use ($app) {
+
+  require "email.php";
+        
+        $message->addPart("mensagm", 'text/plain');
+		/*$message->setBody($app['twig']->render('email_html.twig', $dados), 'text/html');
+        $message->addPart($app['twig']->render('email_plain.twig', $dados), 'text/plain');*/
+		
+		print_r(get_class_methods($mailer));
+		$result = $mailer->send($message);
+
+    return new Response('Thank you for your feedback!', 201);
+});
+
+$app->run();

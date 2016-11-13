@@ -1,0 +1,53 @@
+{% extends "inc/base.html" %}
+
+{% block title %}Criar Conta do Triz{% endblock %}
+
+{% block main %}
+<h1>Criar Conta do Triz</h1>
+<form method="POST" action="/conta/criar">
+	<fieldset>
+		<legend>Nome Completo</legend>
+		<input type="text" name="nome" id="nome" placeholder="Nome" required>
+		<input type="text" name="sobrenome" id="sobrenome" placeholder="Sobrenome" required>
+	</fieldset>
+	<fieldset>
+		<legend>Data de Nascimento</legend>
+		<input type="text" name="dia" id="dia" maxlength="2" placeholder="Dia" required>
+		<select name="mes" id="mes">
+			<option value="1">Janeiro</option>
+			<option value="2">Fevereiro</option>
+			<option value="3">Março</option>
+			<option value="4">Abril</option>
+			<option value="5">Maio</option>
+			<option value="6">Junho</option>
+			<option value="7">Julho</option>
+			<option value="8">Agosto</option>
+			<option value="9">Setembro</option>
+			<option value="10">Outubro</option>
+			<option value="11">Novembro</option>
+			<option value="12">Dezembro</option>
+		</select>
+		<input type="text" name="ano" id="ano" maxlength="4" placeholder="Ano" required>
+	</fieldset>
+	<fieldset>
+		<legend>Gênero</legend>
+		<label><input type="radio" name="genero" id="genero" value="f">Feminino</label>
+		<label><input type="radio" name="genero" id="genero" value="m">Masculino</label>
+		<label><input type="radio" name="genero" id="genero" value="o" checked>Outro</label>
+	</fieldset>
+	<fieldset>
+		<legend>Cadastro</legend>
+		<input type="email" name="email" id="email" placeholder="E-mail" required>
+		<input type="email" name="email2" id="email2" placeholder="Repita o E-mail" required>
+		<input type="password" name="senha" id="senha" placeholder="Senha" required>
+	</fieldset>
+	{% if erros is defined %}
+		<ul>
+		{% for erro in erros %}
+			<li>{{ erro }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	<input type="submit" id="criar" value="Criar conta">
+</form>
+{% endblock %}
