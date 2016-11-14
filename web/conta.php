@@ -78,8 +78,8 @@ $conta->post('/criar', function() use($app) {
 		$stmt->execute();
 		
 		//envia e-mail de ativação de conta se estiver em operação
-		if(!$_SERVER['SERVER_NAME']==="localhost"){
-			require 'email_ativacao_conta.php';	
+		if(strcmp($_SERVER['SERVER_NAME'],"localhost") != 0){
+			require 'email_ativacao_conta.php';			
 		}
 		
 	}catch(PDOException $ex){
