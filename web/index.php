@@ -90,7 +90,13 @@ $app->match('/feedback', function (Request $request) use ($app) {
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
 	$headers .= 'From: Triz <noreply@trizdev.esy.es>' . "\r\n";
 	
-	mail($to, $subject, "Endereço para ativação: blablabla", $headers);
+	$m = '<html><head></head><body>'.
+	$m .= '<h1>Triz</h1>';
+	$m .= '<p><strong>Confirme sua senha clicando aqui</strong></p>';
+	$m .= '<p>Você está recebendo esse e-mail porque se cadastrou em Triz.com</p>';
+	$m .= '</body></html>';
+	
+	mail($to, $subject, $m, $headers);
 
     return new Response('Thank you for your feedback!', 201);
 });
