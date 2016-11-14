@@ -94,14 +94,14 @@ $app->match('/mural', function () use ($app) {
 
 $app->match('/feedback', function (Request $request) use ($app) {
 
-  require "email.php";
-        
-        $message->addPart("mensagm", 'text/plain');
-		/*$message->setBody($app['twig']->render('email_html.twig', $dados), 'text/html');
-        $message->addPart($app['twig']->render('email_plain.twig', $dados), 'text/plain');*/
-		
-		print_r(get_class_methods($mailer));
-		$result = $mailer->send($message);
+	$to  = 'trizmps@gmail.com';
+	$subject = 'Confirmação de cadastro no Triz';
+	
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
+	$headers .= 'From: Triz <noreply@trizdev.esy.es>' . "\r\n";
+	
+	mail($to, $subject, require "confirmar_conta.html", $headers);
 
     return new Response('Thank you for your feedback!', 201);
 });
