@@ -19,17 +19,6 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app['twig']->addGlobal('static', 'http://localhost/triz/static'); //armazenamento de recursos estáticos
 $app['twig']->addGlobal('ducs', 'http://localhost/triz/ducs'); //serviço de conteúdo de usuário
 
-/*$app->register(new Silex\Provider\SwiftmailerServiceProvider());
-$app['swiftmailer.options'] = array(
-    'host' => 'smtp.gmail.com',
-    'port' => 587,
-	'username' => 'trizmps@gmail.com',
-	'password' => 'g_aca:2014-1.mpT',
-	'encryption' => 'tls'
-);*/
-
-
-
 require_once __DIR__.'/../src/conexao.php';
 require_once __DIR__.'/../src/autenticacao.php';
 
@@ -101,7 +90,7 @@ $app->match('/feedback', function (Request $request) use ($app) {
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
 	$headers .= 'From: Triz <noreply@trizdev.esy.es>' . "\r\n";
 	
-	mail($to, $subject, require "confirmar_conta.html", $headers);
+	mail($to, $subject, "Endereço para ativação: blablabla", $headers);
 
     return new Response('Thank you for your feedback!', 201);
 });
