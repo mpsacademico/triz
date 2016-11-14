@@ -17,15 +17,15 @@ $conta->post('/criar', function() use($app) {
     $email2 = $_POST['email2'];
 	$senha = $_POST['senha'];
 	
-	if(is_numeric($dia) && is_numeric($ano)){
-		if(checkdate($dia, $mes, $ano)){
+	if(is_numeric($dia) && is_numeric($ano)){	
+		if(checkdate($mes, $dia, $ano)){		
 			if($ano < 1900 || $ano > date('Y')){
 				$e[] = "Apenas anos entre 1900 e ".date('Y')." são aceitos";
 			}else{
 				$dt_nascimento = sprintf('%s-%s-%s', $ano, $mes, $dia);    		
 			} 
 		}else{
-			$e[] = "A data é inválida";
+			$e[] = "A data é inválida";			
 		}
     }else{
     	$e[] = "A data contêm caracteres não permitidos";
@@ -76,7 +76,12 @@ $conta->post('/criar', function() use($app) {
 		$stmt->bindParam(':ts_criacao', $dt_criacao);
 		$stmt->bindParam(':estado', $estado);		
 		$stmt->execute();
-		//criar sessão temporária aqui
+		
+		//envia e-mail de ativação de conta se estiver em operação
+		if(!$_SERVER['SERVER_NAME']==="localhost"){
+			require 'email_ativacao_conta.php';	
+		}
+		
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }

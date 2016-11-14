@@ -22,9 +22,10 @@ $app['twig']->addGlobal('ducs', 'http://localhost/triz/ducs'); //serviço de con
 require_once __DIR__.'/../src/conexao.php';
 require_once __DIR__.'/../src/autenticacao.php';
 
+$app->mount('/saticon', require 'saticon.php');
 $app->mount('/conta', require 'conta.php');
 
-$app->match('/', function () use ($app) {
+$app->match('/', function () use ($app) { 
     return $app['twig']->render('page_inicio.html');
 });
 
@@ -80,25 +81,5 @@ $app->match('/mural', function () use ($app) {
     return $app['twig']->render('page_mural.html');
 })
 ->before($protector);
-
-$app->match('/feedback', function (Request $request) use ($app) {
-
-	$to  = 'trizmps@gmail.com';
-	$subject = 'Confirmação de cadastro no Triz';
-	
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";	
-	$headers .= 'From: Triz <noreply@trizdev.esy.es>' . "\r\n";
-	
-	$m = '<html><head></head><body>'.
-	$m .= '<h1>Triz</h1>';
-	$m .= '<p><strong>Confirme sua senha clicando aqui</strong></p>';
-	$m .= '<p>Você está recebendo esse e-mail porque se cadastrou em Triz.com</p>';
-	$m .= '</body></html>';
-	
-	mail($to, $subject, $m, $headers);
-
-    return new Response('Thank you for your feedback!', 201);
-});
 
 $app->run();
