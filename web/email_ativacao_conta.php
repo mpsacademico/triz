@@ -9,7 +9,6 @@ $headers .= 'From: Triz <noreply@trizdev.esy.es>' . "\r\n";
 $primeiro_nome = $nome;
 $url_ativacao = "http://".$_SERVER["SERVER_NAME"]."/saticon/ativar/".$cha_ativacao;
 
-$ts_criacao = time();	
 $data = date("d/m/Y", $ts_criacao);
 $hora = date("H:i:s", $ts_criacao);;
 

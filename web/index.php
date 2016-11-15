@@ -43,15 +43,52 @@ $app->match('/entrar', function (Request $request) use ($app) {
 			}else{
 				$rs = $stmt->fetch(PDO::FETCH_ASSOC);
 				$hash_senha = hash('sha512', $senha.$rs['salt_senha']);
-				$stmt = $conn->prepare("SELECT id_conta_usuario, nome, sobrenome, email, login, salt_conta FROM tz_conta_usuario WHERE email = :email AND senha = :senha;");
+				$stmt = $conn->prepare("SELECT id_conta_usuario, nome, sobrenome, email, login, salt_conta, ts_criacao, estado FROM tz_conta_usuario WHERE email = :email AND senha = :senha;");
 				$stmt->bindParam(':email', $email);
 				$stmt->bindParam(':senha', $hash_senha);
 				$stmt->execute();			
 				if($stmt->rowCount()==1){	
 					$rs = $stmt->fetch(PDO::FETCH_ASSOC);
-					$npu = md5($rs['id_conta_usuario']);
-					$app['session']->set('conta_usuario', array('id_conta_usuario' => $rs['id_conta_usuario'], 'nome'=> $rs['nome'], 'sobrenome' => $rs['sobrenome'], 'email' => $rs['email'], 'npu' => $npu));
-					return $app->redirect('/mural');
+					if($rs['estado']==1){
+						$npu = md5($rs['id_conta_usuario']);
+						$app['session']->set('conta_usuario', array('id_conta_usuario' => $rs['id_conta_usuario'], 'nome'=> $rs['nome'], 'sobrenome' => $rs['sobrenome'], 'email' => $rs['email'], 'npu' => $npu));
+						
+						$ts_entrada = date("Y-m-d H:i:s");
+						$remote_addr = $_SERVER['REMOTE_ADDR'];
+						$js_http_server = json_encode($_SERVER, true);
+						$id_conta_usuario = $rs['id_conta_usuario'];
+						
+						$sql = "INSERT INTO tz_log_acesso (ts_entrada, remote_addr, js_http_server, id_conta_usuario) VALUES (:ts_entrada, :remote_addr, :js_http_server, :id_conta_usuario);";
+						$stmt = $conn->prepare($sql);
+						$stmt->bindParam(':ts_entrada', $ts_entrada);
+						$stmt->bindParam(':remote_addr', $remote_addr);
+						$stmt->bindParam(':js_http_server', $js_http_server);
+						$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);					
+						$stmt->execute();	
+						
+						return $app->redirect('/mural');
+					}else if($rs['estado']==0){
+					
+						$id_conta_usuario = $rs['id_conta_usuario'];
+						$nome = $rs['nome'];
+						$email = $rs['email'];
+						$ts_criacao = $rs['ts_criacao'];
+						
+						$date = new DateTime($ts_criacao);
+						$ts_criacao = $date->getTimestamp();
+						
+						$sql = "SELECT cha_ativacao FROM tz_cha_ativacao WHERE id_conta_usuario = :id_conta_usuario;";
+						$stmt = $conn->prepare($sql);
+						$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
+						$stmt->execute();	
+						$rs = $stmt->fetch(PDO::FETCH_ASSOC);
+						
+						$cha_ativacao = $rs['cha_ativacao'];
+
+						$app['session']->set('ativacao', array('id_conta_usuario' => $id_conta_usuario, 'nome' => $nome, 'email' => $email, 'ts_criacao' => $ts_criacao, 'cha_ativacao' => $cha_ativacao));						
+						
+						return $app->redirect('/ativacao');
+					}
 				}else{
 					$e[] = "O e-mail e a senha não coincidem";
 				}

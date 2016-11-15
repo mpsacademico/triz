@@ -54,7 +54,7 @@ $conta->post('/criar', function() use($app) {
 	}
 	
     $ts_criacao = time();
-	$dt_criacao = date("Y-m-d h:i:s", $ts_criacao);
+	$dt_criacao = date("Y-m-d H:i:s", $ts_criacao);
     $salt_conta = md5($email.$ts_criacao);
     $salt_senha = md5(uniqid(rand(), true));
     $hash_senha = hash('sha512', $senha.$salt_senha);
@@ -98,6 +98,24 @@ $conta->post('/criar', function() use($app) {
 	$conn = null;
     return $app->redirect('/');
 });
+
+$conta->match('/acesso', function () use ($app) {
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+	try {
+		$conn = nconn();
+		$sql = "SELECT ts_entrada, remote_addr FROM tz_log_acesso WHERE id_conta_usuario = :id_conta_usuario ORDER BY ts_entrada DESC LIMIT 10;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
+		$stmt->execute();
+		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	$conn = null;	
+	return $app['twig']->render('page_acesso.html', array("rs" => $rs));
+})
+->before($protector);
 
 return $conta;
 ?>

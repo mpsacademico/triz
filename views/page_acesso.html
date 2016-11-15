@@ -1,0 +1,25 @@
+{% extends "inc/base.html" %}
+
+{% block title %}Acessos a Conta{% endblock %}
+
+{% block main %}
+    <h1>Acessos a Conta</h1>
+	<table class="ui basic table">
+	  <thead>
+		<tr>
+		  <th>Data</th>
+		  <th>Hora</th>
+		  <th>Endereço IP</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		{% for r in rs %}
+		<tr>
+		  <td>{{ r.ts_entrada|date("d/m/Y") }}</td>
+		  <td>{{ r.ts_entrada|date("H:i:s") }}</td>
+		  <td>{{ r.remote_addr }}</td>
+		</tr>	
+		{% endfor %}
+	  </tbody>
+	</table>    
+{% endblock %}
