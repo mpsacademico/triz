@@ -13,7 +13,7 @@ $data = date("d/m/Y", $ts_criacao);
 $hora = date("H:i:s", $ts_criacao);;
 
 $m = '<!DOCTYPE html><html><head></head><body>';
-$m .= '<h1 style="background-color:#DC143C; color: white; padding: 25px 10px">Triz</h1>';
+$m .= '<h1 style="background-color:#ef311d; color: white; padding: 25px 10px">Triz</h1>';
 $m .= '<h2>Confirmação de Conta</h2><br>';
 $m .= '<p>Olá '.$primeiro_nome.',</p>';
 $m .= '<p>Obrigado por cadastrar-se no Triz. Clique no link para ativar sua conta!</p><br>';

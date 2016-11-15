@@ -16,8 +16,8 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
-$app['twig']->addGlobal('static', 'http://localhost/triz/static'); //armazenamento de recursos estáticos
-$app['twig']->addGlobal('ducs', 'http://localhost/triz/ducs'); //serviço de conteúdo de usuário
+$app['twig']->addGlobal('static', 'http://'.$_SERVER["SERVER_NAME"].'/static'); //armazenamento de recursos estáticos
+$app['twig']->addGlobal('ducs', 'http://'.$_SERVER["SERVER_NAME"].'/ducs'); //serviço de conteúdo de usuário
 
 require_once __DIR__.'/../src/conexao.php';
 require_once __DIR__.'/../src/autenticacao.php';
