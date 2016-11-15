@@ -77,6 +77,16 @@ $conta->post('/criar', function() use($app) {
 		$stmt->bindParam(':estado', $estado);		
 		$stmt->execute();
 		
+		$cha_ativacao = hash( 'sha512', $salt_conta.time() );
+		
+		$sql = "INSERT INTO tz_cha_ativacao (cha_ativacao, estado, id_conta_usuario) VALUES(:cha_ativacao, 0, :id_conta_usuario);";
+		
+		$stmt = $conn->prepare($sql);
+		$id_conta_usuario = $conn->lastInsertId(); 
+		$stmt->bindParam(':cha_ativacao', $cha_ativacao);
+		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
+		$stmt->execute();
+		
 		//envia e-mail de ativação de conta se estiver em operação
 		if(strcmp($_SERVER['SERVER_NAME'],"localhost") != 0){
 			require 'email_ativacao_conta.php';			
