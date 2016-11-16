@@ -1,9 +1,65 @@
 {% extends "inc/base.html" %}
 
-{% block title %}Mural da Aline{% endblock %}
+{% block title %}Mural de {{ nome }}{% endblock %}
 
 {% block main %}
-    <h1>Mural</h1>
-    Bem vindo ao mural!
-	<a href="/sair" title="Sair da sua conta">Sair do Triz</a>    
+
+<script>
+  $(document)
+    .ready(function() {
+
+      // fix main menu to page on passing
+      $('.main.menu').visibility({
+        type: 'fixed'
+      });
+      $('.overlay').visibility({
+        type: 'fixed',
+        offset: 80
+      });
+
+      // lazy load images
+      $('.image').visibility({
+        type: 'image',
+        transition: 'vertical flip in',
+        duration: 500
+      });
+
+      // show dropdown on hover
+      $('.main.menu  .ui.dropdown').dropdown({
+        on: 'hover'
+      });
+    })
+  ;
+</script>
+
+	<div class="ui main text container">
+		<h1 class="ui header">Mural</h1>   
+	</div>
+     <div class="ui borderless main menu">
+    <div class="ui text container">
+      <div href="#" class="header item">
+        <img class="logo" src="{{ static }}/img/marca/logo_256.png">
+        Triz
+      </div>
+      <a href="/mural" class="item">Mural</a>
+      <a href="/projeto/geral" class="item">Projetos</a>
+	  
+	  <div class="ui right dropdown item">
+		<div>
+		  <img class="ui avatar image" src="http://localhost/views/img.jpg" alt="." style="background-color:black">
+		  {{ nome }}
+		</div>
+		<i class="dropdown icon"></i>
+		<div class="menu">
+		  <div class="item">Applications</div>
+		  <div class="item">International Students</div>
+		  <div class="divider"></div>
+		  <div class="item"><a href="/sair">Sair do Triz</a></div>
+		</div>
+	  </div>
+	  
+    </div>
+  </div>
+	
+	    
 {% endblock %}

@@ -115,7 +115,7 @@ $app->match('/sair', function () use ($app) {
 
 $app->match('/mural', function () use ($app) {
 	$usuario = $app['session']->get('conta_usuario');
-    return $app['twig']->render('page_mural.html');
+    return $app['twig']->render('page_mural.html', $usuario);
 })
 ->before($protector);
 

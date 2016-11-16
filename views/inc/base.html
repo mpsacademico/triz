@@ -6,7 +6,9 @@
 		<meta charset="UTF-8">
 		<link rel="shortcut icon" type="image/png" href="{{ static }}/img/favicon.png" sizes="16x16">
 		<link rel="stylesheet" type="text/css" href="{{ static }}/css/reset.css">
-		<link rel="stylesheet" type="text/css" href="{{ static }}/css/semantic.min.css">					
+		<link rel="stylesheet" type="text/css" href="{{ static }}/css/semantic.min.css">
+		<script src="{{ static }}/js/jquery.min.js"></script>
+		<script src="{{ static }}/js/semantic.min.js"></script>
         {% endblock %}
     </head>
     <body>
@@ -22,7 +24,6 @@
             {% block footer %}
             &copy; Copyright 2016 - Triz
             {% endblock %}
-        </footer>
-		<script src="{{ static }}/js/semantic.min.js"></script>
+        </footer>		
     </body>
 </html>
