@@ -1,20 +1,21 @@
-{% extends "inc/base.html" %}
+{% extends "inc/base_simples.html" %}
 
 {% block title %}Ativação de Conta{% endblock %}
+{% block titleheader %}Ativação de Conta{% endblock %}
 
 {% block main %}
-<h1>Ativação de Conta</h1>
-<h2>Você precisa ativar sua conta para prosseguir!</h2>
+	
+	{% if msgs is defined %}
+		<div class="alert alert-success" role="alert">
+		{% for msg in msgs %}
+			{{ msg }} <a href="/entrar" class="alert-link">Entrar no Triz</a>
+		{% endfor %}
+		</div>
+	{% endif %}
 
-{% if msgs is defined %}
-	{% for msg in msgs %}
-		<li>{{ msg }}</li>
-		<h3><a href="/entrar">Entrar no Triz</a></h3>
-	{% endfor %}
-{% endif %}
-
-{% if not msgs is defined %}
-<h3><a href="ativacao/reenviar">Reenviar e-mail de confirmação</a></h3>
-{% endif %}
+	{% if not msgs is defined %}
+	<h2>Você precisa ativar sua conta para prosseguir!</h2>
+	<h3><a href="ativacao/reenviar">Reenviar e-mail de confirmação</a></h3>
+	{% endif %}
 
 {% endblock %}

@@ -46,7 +46,7 @@ $app->match('/ativacao/reenviar', function() use($app) {
 			require 'email_ativacao_conta.php';			
 		}
 		$app['session']->clear();
-		return $app['twig']->render('page_ativacao.html', array('msgs' => array("E-mail enviado com sucessso!")));
+		return $app['twig']->render('page_ativacao.html', array('msgs' => array("E-mail enviado com sucesso!")));
 	}		
 	return $app->redirect('/');
 });

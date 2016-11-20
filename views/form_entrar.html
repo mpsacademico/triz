@@ -3,67 +3,56 @@
 {% block title %}Entrar{% endblock %}
 
 {% block head %}
-	{{ parent() }}
-	<link rel="stylesheet" type="text/css" href="{{ static }}/css/form_entrar.css">
+	{{ parent() }}	
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 	<style type="text/css">
-		body {
-		  background-color: #f1f1f1;
-		}
-		body > .grid {
-		  height: 100%;
-		}
-		.image {
-		  margin-top: -100px;
-		}
-		.column {
-		  max-width: 450px;
-		}
-		.rt {
-			 !important
-		}
+		.rose {
+			background:url(../img/bg-pattern.png),#7b4397;
+			background:url(../img/bg-pattern.png),-webkit-linear-gradient(to left,#7b4397,#dc2430);
+			background:url(../img/bg-pattern.png),linear-gradient(to left,#7b4397,#dc2430);color:#fff;
+		}		
 	</style>
 {% endblock %}
 
 {% block header %}{% endblock %}
 
 {% block main %}
-<div class="ui middle aligned center aligned grid">
-	<div class="column">
-		<h2 class="ui teal image header">
-			<img src="{{ static }}/img/marca/logo_256.png" class="image">
-			<div class="content" style="color:#008B8B">
-				Entre em sua conta Triz
-			</div>
-		</h2>
-		<form method="POST" action="/entrar" class="ui large form">    
-			<div class="ui stacked segment">
-				<div class="field">
-					<div class="ui input">            
-						<input type="email" name="email" id="email" placeholder="E-mail" required>            
-					</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="login-panel panel panel-none">			
+				<div class="panel-heading text-center">					
+					<a href="/"><img src="{{ static }}/img/marca/logo_256.png" alt="Triz" style="widht:64px;height:64"></a>
+					<h3>Entre em sua conta Triz</h3>		
 				</div>
-				<div class="field">
-					<div class="ui input">            
-						<input type="password" name="senha" id="senha" placeholder="Senha" required>
+				<div class="panel-body">
+					{% if erros is defined %}
+					<div class="alert alert-danger text-center" role="alert">
+						<strong>{{ erros.0 }}</strong>		
 					</div>
-				</div>
-				<input type="submit" id="entrar" value="Entrar no Triz" class="ui fluid large teal submit button" style="background-color: #008B8B">       
-			</div>
-			{% if erros is defined %}
-			<div class="ui visible red error message">		
-				{{ erros.0 }}			
-			</div>
-			{% endif %}
-		</form>
-		<div class="ui message">
-			Novo por aqui? <a href="/conta/criar">Crie uma conta</a>
-		</div>
-		<div>
-			&copy {{ "now"|date("Y") }} MPS. Todos os direitos reservados.
-		</div>
-	</div>
+					{% endif %}
+					<form method="POST" action="/entrar" role="form">
+						<fieldset>
+							<div class="form-group">
+								<input type="email" name="email" id="email" placeholder="E-mail" required autofocus class="form-control">							
+							</div>
+							<div class="form-group">
+								<input type="password" name="senha" id="senha" placeholder="Senha" required class="form-control">								
+							</div>												
+							<input type="submit" id="entrar" value="Entrar no Triz" class="btn btn-lg btn-error btn-block rose" style="outline:none">  
+						</fieldset>						
+					</form>
+				</div>				
+				<p class="text-center">
+					Novo por aqui? <a href="/conta/criar">Crie uma conta</a>
+				</p>
+			</div>				
+			<p class="text-center copyright text-muted small">
+				<small>&copy {{ "now"|date("Y") }} Triz MPS. Todos os direitos reservados.</small>
+			</p>
+		</div>		
+	</div>	
 </div>
 {% endblock %}
 

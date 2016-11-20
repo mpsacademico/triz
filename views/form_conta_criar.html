@@ -1,19 +1,57 @@
 {% extends "inc/base.html" %}
 
-{% block title %}Criar Conta do Triz{% endblock %}
+{% block title %}Criar Conta{% endblock %}
 
 {% block main %}
-<h1>Criar Conta do Triz</h1>
+<div class="container">	
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="panel panel-none">	
+			<div class="panel-heading text-center">		
+		<a href="/"><img src="{{ static }}/img/marca/logo_256.png" alt="Triz" style="widht:64px;height:64"></a>
+<h1>Criar sua conta Triz</h1>
+</div>
+<div class="panel-body">
+
 <form method="POST" action="/conta/criar">
+{% if erros is defined %}
+	<div class="alert alert-danger" role="alert">
+		<ul>
+		{% for erro in erros %}
+			<li><strong>{{ erro }}</strong></li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
 	<fieldset>
+		
 		<legend>Nome Completo</legend>
-		<input type="text" name="nome" id="nome" placeholder="Nome" required>
-		<input type="text" name="sobrenome" id="sobrenome" placeholder="Sobrenome" required>
+		
+		<div class="form-group">
+		<div class="row">
+		 <div class="col-lg-6">
+		<input type="text" name="nome" id="nome" placeholder="Nome" required class="form-control">
+		</div>
+		 <div class="col-lg-6">
+		<input type="text" name="sobrenome" id="sobrenome" placeholder="Sobrenome" required class="form-control">
+		</div>
+		</div>
+		</div>
+		
+		
+		
+		
 	</fieldset>
-	<fieldset>
+	<fieldset>	
+		<div class="form-group">
+		
 		<legend>Data de Nascimento</legend>
-		<input type="text" name="dia" id="dia" maxlength="2" placeholder="Dia" required>
-		<select name="mes" id="mes">
+		<div class="row">
+		<div class="col-lg-4">
+		<input type="text" name="dia" id="dia" maxlength="2" placeholder="Dia" required class="form-control">
+		</div>
+		<div class="col-lg-4">
+		<select name="mes" id="mes" class="form-control">
 			<option value="1">Janeiro</option>
 			<option value="2">Fevereiro</option>
 			<option value="3">Março</option>
@@ -27,27 +65,51 @@
 			<option value="11">Novembro</option>
 			<option value="12">Dezembro</option>
 		</select>
-		<input type="text" name="ano" id="ano" maxlength="4" placeholder="Ano" required>
+		</div>
+		<div class="col-lg-4">
+		<input type="text" name="ano" id="ano" maxlength="4" placeholder="Ano" required class="form-control">
+		</div>
+		</div>
+		</div>
 	</fieldset>
 	<fieldset>
+		<div class="form-group">
 		<legend>Gênero</legend>
-		<label><input type="radio" name="genero" id="genero" value="f">Feminino</label>
-		<label><input type="radio" name="genero" id="genero" value="m">Masculino</label>
-		<label><input type="radio" name="genero" id="genero" value="o" checked>Outro</label>
+		<label class="radio-inline"><input type="radio" name="genero" id="genero" value="f">Feminino</label>
+		<label class="radio-inline"><input type="radio" name="genero" id="genero" value="m">Masculino</label>
+		<label class="radio-inline"><input type="radio" name="genero" id="genero" value="o" checked>Outro</label>
+		</div>
 	</fieldset>
 	<fieldset>
-		<legend>Cadastro</legend>
-		<input type="email" name="email" id="email" placeholder="E-mail" required>
-		<input type="email" name="email2" id="email2" placeholder="Repita o E-mail" required>
-		<input type="password" name="senha" id="senha" placeholder="Senha" required>
-	</fieldset>
-	{% if erros is defined %}
-		<ul>
-		{% for erro in erros %}
-			<li>{{ erro }}</li>
-		{% endfor %}
-		</ul>
-	{% endif %}
-	<input type="submit" id="criar" value="Criar conta">
+		<div class="form-group">
+		
+		<legend></legend>
+		<div class="row">
+		<div class="col-lg-4">
+		<input type="email" name="email" id="email" placeholder="E-mail" required class="form-control">
+		</div>
+		<div class="col-lg-4">
+		<input type="email" name="email2" id="email2" placeholder="Repita o E-mail" required class="form-control">
+		</div>
+		<div class="col-lg-4">
+		<input type="password" name="senha" id="senha" placeholder="Senha" required class="form-control">
+		</div>
+		</div>
+		</div>
+	</fieldset>	
+	<div class="form-group">
+	<input type="submit" id="criar" value="Criar conta" class="btn btn-error btn-block rose" class="form-control">
+	</div>
+	<div class="row">
+		<p class="copyright text-center text-muted small">&copy {{ "now"|date("Y") }} Triz MPS. Todos os direitos reservados.</p>
+	</div>
+	
 </form>
+</div>
+</div>
+</div>
+</div>
+</div>
 {% endblock %}
+
+{% block footer %}{% endblock %}

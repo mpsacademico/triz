@@ -108,6 +108,14 @@ $app->match('/entrar', function (Request $request) use ($app) {
     }
 });
 
+$app->match('/termos', function () use ($app) {
+	return $app['twig']->render('page_termos.html');
+});
+
+$app->match('/sobre', function () use ($app) {
+	return $app['twig']->render('page_sobre.html');
+});
+
 $app->match('/sair', function () use ($app) {
 	$app['session']->clear();
 	return $app->redirect('/');
