@@ -1,5 +1,8 @@
 ﻿<?php
 
+ini_set('post_max_size', '8M');
+ini_set('upload_max_filesize', '8M');
+
 date_default_timezone_set("America/Sao_Paulo");
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -16,6 +19,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+$app['destino-ducs'] = 'C:\\xampp\\htdocs\\ducs\\usuario\\perfil\\';
 $app['twig']->addGlobal('static', 'http://'.$_SERVER["SERVER_NAME"].'/static'); //armazenamento de recursos estáticos
 $app['twig']->addGlobal('ducs', 'http://'.$_SERVER["SERVER_NAME"].'/ducs'); //serviço de conteúdo de usuário
 
@@ -24,6 +28,7 @@ require_once __DIR__.'/../src/autenticacao.php';
 
 $app->mount('/saticon', require 'saticon.php');
 $app->mount('/conta', require 'conta.php');
+$app->mount('/perfil', require 'perfil.php');
 
 $app->match('/', function () use ($app) { 
     return $app['twig']->render('page_inicio.html');
@@ -122,8 +127,21 @@ $app->match('/sair', function () use ($app) {
 });
 
 $app->match('/mural', function () use ($app) {
-	$usuario = $app['session']->get('conta_usuario');
-    return $app['twig']->render('page_mural.html', $usuario);
+	$user = $app['session']->get('conta_usuario');
+	$id = $user['id_conta_usuario'];
+	try {
+		$conn = nconn();
+		$sql = "SELECT c.nome, c.sobrenome, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		$qt = $stmt->rowCount();
+		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);				
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	$conn = null;    
+    return $app['twig']->render('page_mural.html', $rs[0]);
 })
 ->before($protector);
 

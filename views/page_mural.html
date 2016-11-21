@@ -4,62 +4,29 @@
 
 {% block main %}
 
-<script>
-  $(document)
-    .ready(function() {
-
-      // fix main menu to page on passing
-      $('.main.menu').visibility({
-        type: 'fixed'
-      });
-      $('.overlay').visibility({
-        type: 'fixed',
-        offset: 80
-      });
-
-      // lazy load images
-      $('.image').visibility({
-        type: 'image',
-        transition: 'vertical flip in',
-        duration: 500
-      });
-
-      // show dropdown on hover
-      $('.main.menu  .ui.dropdown').dropdown({
-        on: 'hover'
-      });
-    })
-  ;
-</script>
-
-	<div class="ui main text container">
-		<h1 class="ui header">Mural</h1>   
-	</div>
-     <div class="ui borderless main menu">
-    <div class="ui text container">
-      <div href="#" class="header item">
         <img class="logo" src="{{ static }}/img/marca/logo_256.png">
         Triz
-      </div>
+      
       <a href="/mural" class="item">Mural</a>
       <a href="/projeto/geral" class="item">Projetos</a>
-	  
-	  <div class="ui right dropdown item">
-		<div>
-		  <img class="ui avatar image" src="http://localhost/views/img.jpg" alt="." style="background-color:black">
-		  {{ nome }}
-		</div>
-		<i class="dropdown icon"></i>
-		<div class="menu">
-		  <div class="item">Applications</div>
-		  <div class="item">International Students</div>
-		  <div class="divider"></div>
-		  <div class="item"><a href="/sair">Sair do Triz</a></div>
-		</div>
-	  </div>
-	  
-    </div>
-  </div>
 	
+  </div>
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">			
+			<div class="img-circle" style="background:#fdcc52 url({{ducs}}/usuario/perfil/{{ imagem }}.{{ ext_imagem }});background-position:center;background-repeat:no-repeat;background-size:auto 32px;height:32px;width:32px;display:inline-block"></div>
+			<h4 style="display:inline">{{ nome }}</h4>			
+			<span class="caret"></span>
+		</a>
+		<ul class="dropdown-menu dropdown-user">			
+			<li class="dropdown-header">Ajustes</li>
+			<li><a href="/perfil/editar">Perfil</a></li>
+			<li><a href="/conta">Conta</a></li>
+			<li class="dropdown-header">Segurança</li>
+			<li><a href="/perfil">Senha</a></li>
+			<li><a href="/conta">Acessos</a></li>
+			<li class="divider"></li>
+			<li><a href="/sair">Sair do Triz</a></li>
+		</ul>		
+	</li>
 	    
 {% endblock %}

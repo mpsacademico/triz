@@ -3,6 +3,11 @@ $conta = $app['controllers_factory'];
 
 $conta->get('/criar', function() use($app) {
     return $app['twig']->render('form_conta_criar.html');
+})
+->before(function() use ($app){	
+	if(!(null === $app['session']->get('conta_usuario'))){
+        return $app->redirect('/mural');
+    }
 });
 
 $conta->post('/criar', function() use($app) {
@@ -87,10 +92,17 @@ $conta->post('/criar', function() use($app) {
 		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
 		$stmt->execute();
 		
+		$sql = "INSERT INTO tz_perfil (id_conta_usuario) VALUES (:id_conta_usuario);";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
+		$stmt->execute();
+		
 		//envia e-mail de ativação de conta se estiver em operação
 		if(strcmp($_SERVER['SERVER_NAME'],"localhost") != 0){
 			require 'email_ativacao_conta.php';			
 		}
+		
+		return $app->redirect('/ativacao');
 		
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
