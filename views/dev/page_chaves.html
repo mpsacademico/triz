@@ -1,0 +1,54 @@
+{% extends "inc/base_simples.html" %}
+
+{% block title %}Chaves de Ativação{% endblock %}
+{% block titleheader %}Chaves de Ativação de Conta{% endblock %}
+
+{% block main %}
+	<nav>
+		<div class="dropdown" style="display:inline">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			Filtros
+			<span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			<li><a href="/dev/chaves/0/DESC">Contas não ativadas recentes</a></li>
+			<li><a href="/dev/chaves/0/ASC">Contas não ativadas antigas</a></li>			
+			<li role="separator" class="divider"></li>
+			<li><a href="/dev/chaves/1/DESC">Contas ativadas recentes</a></li>
+			<li><a href="/dev/chaves/1/ASC">Contas ativadas antigas</a></li>		
+		  </ul>
+		</div>
+		<a href="/dev/chaves/{{estado}}/{{ordem}}" class="btn btn-default">Recarregar</a>		
+	</nav>
+	<table class="table table-hover table-bordered table-middle">
+	  <thead>
+		<tr>		  
+		  <th>Conta de</th>
+		  <th>E-mail</th>
+		  <th>Criada em</th>		  
+		  <th>ID da Chave</th>		  
+		  <th>Estado</td>		  
+		  <th>Situação</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		{% for r in rs %}
+		<tr>		  
+		  <td>{{ r.nome }} {{ r.sobrenome }}</td>
+		  <td>{{ r.email }}</td>	 
+		  <td>{{ r.ts_criacao|date("d/m/Y H:i:s")}}</td>		  
+		  <td>{{ r.id_cha_ativacao }}</td>			 
+		  <td>{{ r.estado }}</td>		  		  
+		  {% if r.estado == '0' %}
+			<td class="warning">
+				<a href="/saticon/ativar/{{ r.cha_ativacao }}" title="{{ r.cha_ativacao }}" target="_blank" class="btn btn-warning">Ativar ({{ r.intervalo }})</a>	  
+		  {% else %}
+			<td class="success">
+				{{ r.ts_acao|date("d/m/Y H:i:s") }}
+		  {% endif %}
+		  </td>		 
+		</tr>	
+		{% endfor %}
+	  </tbody>
+	</table>	
+{% endblock %}

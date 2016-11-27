@@ -1,0 +1,16 @@
+.rose {		
+	background:#7b4397;background:-webkit-linear-gradient(to left,#7b4397,#dc2430);
+	background:linear-gradient(to left,#7b4397,#dc2430);
+	color:#fff;
+}
+.rose:hover{
+	color: white;
+}
+.rosep {		
+	background:url(../img/bg-pattern.png),#7b4397;background:url(../img/bg-pattern.png),-webkit-linear-gradient(to left,#7b4397,#dc2430);
+	background:url(../img/bg-pattern.png),linear-gradient(to left,#7b4397,#dc2430);
+	color:#fff;
+}
+.table-middle > tbody > tr > td {
+     vertical-align: middle;
+}

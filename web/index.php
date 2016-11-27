@@ -19,6 +19,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+
 $app['destino-ducs'] = 'C:\\xampp\\htdocs\\ducs\\usuario\\perfil\\';
 $app['twig']->addGlobal('static', 'http://'.$_SERVER["SERVER_NAME"].'/static'); //armazenamento de recursos estáticos
 $app['twig']->addGlobal('ducs', 'http://'.$_SERVER["SERVER_NAME"].'/ducs'); //serviço de conteúdo de usuário
@@ -26,6 +27,7 @@ $app['twig']->addGlobal('ducs', 'http://'.$_SERVER["SERVER_NAME"].'/ducs'); //se
 require_once __DIR__.'/../src/conexao.php';
 require_once __DIR__.'/../src/autenticacao.php';
 
+$app->mount('/dev', require 'dev.php'); //debug
 $app->mount('/saticon', require 'saticon.php');
 $app->mount('/conta', require 'conta.php');
 $app->mount('/perfil', require 'perfil.php');
