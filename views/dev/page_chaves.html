@@ -18,37 +18,39 @@
 			<li><a href="/dev/chaves/1/ASC">Contas ativadas antigas</a></li>		
 		  </ul>
 		</div>
-		<a href="/dev/chaves/{{estado}}/{{ordem}}" class="btn btn-default">Recarregar</a>		
+		<a href="/dev/chaves/{{estado}}/{{ordem}}">Recarregar</a>		
 	</nav>
-	<table class="table table-hover table-bordered table-middle">
-	  <thead>
-		<tr>		  
-		  <th>Conta de</th>
-		  <th>E-mail</th>
-		  <th>Criada em</th>		  
-		  <th>ID da Chave</th>		  
-		  <th>Estado</td>		  
-		  <th>Situação</th>
-		</tr>
-	  </thead>
-	  <tbody>
-		{% for r in rs %}
-		<tr>		  
-		  <td>{{ r.nome }} {{ r.sobrenome }}</td>
-		  <td>{{ r.email }}</td>	 
-		  <td>{{ r.ts_criacao|date("d/m/Y H:i:s")}}</td>		  
-		  <td>{{ r.id_cha_ativacao }}</td>			 
-		  <td>{{ r.estado }}</td>		  		  
-		  {% if r.estado == '0' %}
-			<td class="warning">
-				<a href="/saticon/ativar/{{ r.cha_ativacao }}" title="{{ r.cha_ativacao }}" target="_blank" class="btn btn-warning">Ativar ({{ r.intervalo }})</a>	  
-		  {% else %}
-			<td class="success">
-				{{ r.ts_acao|date("d/m/Y H:i:s") }}
-		  {% endif %}
-		  </td>		 
-		</tr>	
-		{% endfor %}
-	  </tbody>
-	</table>	
+	<div class="table-responsive">
+		<table class="table table-hover table-bordered table-middle">
+		  <thead>
+			<tr>		  
+			  <th>Conta de</th>
+			  <th>E-mail</th>
+			  <th>Criada em</th>		  
+			  <th>ID da Chave</th>		  
+			  <th>Estado</td>		  
+			  <th>Situação</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{% for r in rs %}
+			<tr>		  
+			  <td>{{ r.nome }} {{ r.sobrenome }}</td>
+			  <td>{{ r.email }}</td>	 
+			  <td>{{ r.ts_criacao|date("d/m/Y H:i:s")}}</td>		  
+			  <td>{{ r.id_cha_ativacao }}</td>			 
+			  <td>{{ r.estado }}</td>		  		  
+			  {% if r.estado == '0' %}
+				<td class="warning">
+					<a href="/saticon/ativar/{{ r.cha_ativacao }}" title="{{ r.cha_ativacao }}" target="_blank" class="btn btn-warning">Ativar ({{ r.intervalo }})</a>	  
+			  {% else %}
+				<td class="success">
+					{{ r.ts_acao|date("d/m/Y H:i:s") }}
+			  {% endif %}
+			  </td>		 
+			</tr>	
+			{% endfor %}
+		  </tbody>
+		</table>
+	</div>
 {% endblock %}

@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+	<title>Início - Triz</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Início - Triz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
 	<link rel="stylesheet" type="text/css" href="{{ static }}/css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="{{ static }}/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ static }}/css/new-age.min.css">    
-	<style type="text/css">
-		.rose {		
-			background:url(../img/bg-pattern.png),#7b4397;background:url(../img/bg-pattern.png),-webkit-linear-gradient(to left,#7b4397,#dc2430);
-			background:url(../img/bg-pattern.png),linear-gradient(to left,#7b4397,#dc2430);
-			color:#fff;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{{ static }}/css/triz.css">
 </head>
+
 <body id="topo">
+
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container">            
             <div class="navbar-header rose">
@@ -35,7 +32,13 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="#conexoes">Conexões</a>
-                    </li>					
+                    </li>	
+					<li>
+                        <a class="page-scroll" href="conta/criar">Criar Conta</a>
+                    </li>	
+					<li>
+                        <a class="page-scroll" href="entrar">Entrar</a>
+                    </li>	
                 </ul>
             </div>            
         </div>        
@@ -180,7 +183,6 @@
 	<script src="{{ static }}/js/jquery.min.js"></script>
 	<script src="{{ static }}/js/bootstrap.min.js"></script>
 	<script src="{{ static }}/js/new-age.min.js"></script>
-	
+	<script src="{{ static }}/js/triz.js"></script>
 </body>
-
 </html>

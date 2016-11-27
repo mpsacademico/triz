@@ -57,13 +57,26 @@ $app->match('/entrar', function (Request $request) use ($app) {
 				if($stmt->rowCount()==1){	
 					$rs = $stmt->fetch(PDO::FETCH_ASSOC);
 					if($rs['estado']==1){
+					
+						$id_conta_usuario = $rs['id_conta_usuario'];
 						$npu = md5($rs['id_conta_usuario']);
-						$app['session']->set('conta_usuario', array('id_conta_usuario' => $rs['id_conta_usuario'], 'nome'=> $rs['nome'], 'sobrenome' => $rs['sobrenome'], 'email' => $rs['email'], 'npu' => $npu));
+						
+						try {							
+							$sql = "SELECT p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";
+							$stmt = $conn->prepare($sql);
+							$stmt->bindParam(':id', $id_conta_usuario);
+							$stmt->execute();
+							$qt = $stmt->rowCount();
+							$rsp = $stmt->fetch(PDO::FETCH_ASSOC);				
+						}catch(PDOException $ex){
+							echo "Erro: " . $ex->getMessage();
+						}	  
+	
+						$app['session']->set('conta_usuario', array('id_conta_usuario' => $rs['id_conta_usuario'], 'nome'=> $rs['nome'], 'sobrenome' => $rs['sobrenome'], 'email' => $rs['email'], 'npu' => $npu, 'imagem' => $rsp['imagem'], 'ext_imagem' => $rsp['ext_imagem'], 'cor1' => $rsp['cor1'], 'cor2' => $rsp['cor2']));
 						
 						$ts_entrada = date("Y-m-d H:i:s");
 						$remote_addr = $_SERVER['REMOTE_ADDR'];
-						$js_http_server = json_encode($_SERVER, true);
-						$id_conta_usuario = $rs['id_conta_usuario'];
+						$js_http_server = json_encode($_SERVER, true);						
 						
 						$sql = "INSERT INTO tz_log_acesso (ts_entrada, remote_addr, js_http_server, id_conta_usuario) VALUES (:ts_entrada, :remote_addr, :js_http_server, :id_conta_usuario);";
 						$stmt = $conn->prepare($sql);
@@ -129,21 +142,9 @@ $app->match('/sair', function () use ($app) {
 });
 
 $app->match('/mural', function () use ($app) {
-	$user = $app['session']->get('conta_usuario');
-	$id = $user['id_conta_usuario'];
-	try {
-		$conn = nconn();
-		$sql = "SELECT c.nome, c.sobrenome, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";
-		$stmt = $conn->prepare($sql);
-		$stmt->bindParam(':id', $id);
-		$stmt->execute();
-		$qt = $stmt->rowCount();
-		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);				
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-	$conn = null;    
-    return $app['twig']->render('page_mural.html', $rs[0]);
+	
+	 
+    return $app['twig']->render('page_mural.html');
 })
 ->before($protector);
 

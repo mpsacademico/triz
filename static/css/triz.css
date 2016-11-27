@@ -14,3 +14,6 @@
 .table-middle > tbody > tr > td {
      vertical-align: middle;
 }
+body.fixed-body {
+  padding-top: 70px;
+}
