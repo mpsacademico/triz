@@ -6,7 +6,7 @@ $conta->get('/criar', function() use($app) {
 })
 ->before(function() use ($app){	
 	if(!(null === $app['session']->get('conta_usuario'))){
-        return $app->redirect('/mural');
+        return $app->redirect('/');
     }
 });
 

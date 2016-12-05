@@ -41,7 +41,7 @@ $perfil->get('/editar', function() use($app) {
 })
 ->before($protector);
 
-$perfil->match('/usuario/{id}', function($id) use($app) {	
+$perfil->match('/{id}', function($id) use($app) {	
 	try {
 		$conn = nconn();
 		$sql = "SELECT c.nome, c.sobrenome, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";

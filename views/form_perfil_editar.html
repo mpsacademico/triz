@@ -11,8 +11,8 @@
 {% endif %}
 <style type="text/css">
 	body {
-		background:url({{static}}/img/bg-pattern.png),{{cor1}};background:url({{static}}/img/bg-pattern.png),-webkit-linear-gradient(to left,{{cor1}},{{cor2}});
-		background:url({{static}}/img/bg-pattern.png),linear-gradient(to left,{{cor1}},{{cor2}});
+		background:url({{static}}/img/bg-pattern.png),{{cor2}};background:url({{static}}/img/bg-pattern.png),-webkit-linear-gradient(to left,{{cor2}},{{cor1}});
+		background:url({{static}}/img/bg-pattern.png),linear-gradient(to left,{{cor2}},{{cor1}});
 	}
 </style>
 {% endblock %}
@@ -63,7 +63,7 @@
 							</div>
 						</div>
 						<div class="form-group text-right">
-							<a href="/perfil" class="btn btn-default">Visualizar</a>
+							<a href="/perfil" target="_blank" class="btn btn-default">Visualizar</a>
 							<input type="submit" value="Atualizar perfil" class="btn btn-primary">
 						</div>
 					</form>

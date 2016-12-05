@@ -1,5 +1,6 @@
-﻿<?php
+<?php
 
+//configurações tempo de execução
 ini_set('post_max_size', '8M');
 ini_set('upload_max_filesize', '8M');
 
@@ -33,7 +34,11 @@ $app->mount('/conta', require 'conta.php');
 $app->mount('/perfil', require 'perfil.php');
 
 $app->match('/', function () use ($app) { 
-    return $app['twig']->render('page_inicio.html');
+	if (null === $user = $app['session']->get('conta_usuario')){
+		return $app['twig']->render('page_inicio.html');
+	}else{	
+		return $app['twig']->render('page_mural.html');
+	}
 });
 
 $app->match('/entrar', function (Request $request) use ($app) {		
@@ -86,7 +91,7 @@ $app->match('/entrar', function (Request $request) use ($app) {
 						$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);					
 						$stmt->execute();	
 						
-						return $app->redirect('/mural');
+						return $app->redirect('/');
 					}else if($rs['estado']==0){
 					
 						$id_conta_usuario = $rs['id_conta_usuario'];
@@ -124,7 +129,7 @@ $app->match('/entrar', function (Request $request) use ($app) {
 })
 ->before(function() use ($app){
 	if(!(null === $app['session']->get('conta_usuario'))){
-        return $app->redirect('/mural');
+        return $app->redirect('/');
     }
 });
 
@@ -141,11 +146,18 @@ $app->match('/sair', function () use ($app) {
 	return $app->redirect('/');
 });
 
-$app->match('/mural', function () use ($app) {
-	
-	 
-    return $app['twig']->render('page_mural.html');
-})
-->before($protector);
+$app->error(function (\Exception $e, Request $request, $code) use ($app) {	
+	/*if($app['debug']==true){
+		return;
+	}*/	
+    switch ($code) {
+        case 404:
+            $msg = 'Página não encontrada!';			
+            break;
+        default:
+            $msg = 'Oops! Um erro terrível aconteceu! :(';
+    }
+    return $app['twig']->render('page_erro_generico.html', array("msg"=>$msg, "code"=>$code));
+});
 
 $app->run();

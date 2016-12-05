@@ -1,7 +1,7 @@
-﻿<?php
+<?php
 function nconn(){
-	$conn = new PDO("mysql:host=localhost;dbname=triz;charset=utf8", "root", "");			
+	$conn = new PDO("mysql:host=localhost;dbname=triz;charset=utf8", "root", "");	
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	return $conn;
+	return $conn;	
 }
 ?>

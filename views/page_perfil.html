@@ -7,8 +7,8 @@
 {{parent()}}
 <style type="text/css">
 	body {
-		background:url({{static}}/img/bg-pattern.png),{{cor1}};background:url({{static}}/img/bg-pattern.png),-webkit-linear-gradient(to left,{{cor1}},{{cor2}});
-		background:url({{static}}/img/bg-pattern.png),linear-gradient(to left,{{cor1}},{{cor2}});
+		background:url({{static}}/img/bg-pattern.png),{{cor2}};background:url({{static}}/img/bg-pattern.png),-webkit-linear-gradient(to left,{{cor2}},{{cor1}});
+		background:url({{static}}/img/bg-pattern.png),linear-gradient(to left,{{cor2}},{{cor1}});
 	}
 </style>
 {% endblock %}
@@ -18,15 +18,19 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-none">
-				<div class="panel-heading text-center">		
-					<!--<a href="/"><img src="{{ static }}/img/marca/logo_256.png" alt="Triz" style="widht:32px;height:32"></a>-->
+				<div class="panel-heading text-center">					
 					<div class="img-circle" style="background:#fdcc52 url({{ducs}}/usuario/perfil/{{ imagem }}.{{ ext_imagem }});background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div>
 					<h1>{{ nome|upper }} {{ sobrenome|upper }}</h1>
 					<h3 class="text-muted">{{ ocupacao }}</h3>
 				</div>
 				<div class="panel-body text-center">
-					<p class="lead">{{ biografia }}</p>
-				</div>
+					<p class="lead">{{ biografia }}</p>					
+					{% if id_conta_usuario is defined %}
+						{% if id_conta_usuario == ss.id_conta_usuario %}
+							<a href="/perfil/editar" class="btn btn-default">Editar</a>
+						{% endif %}
+					{% endif %}
+				</div>				
 			</div>
 		</div>
 	</div>
