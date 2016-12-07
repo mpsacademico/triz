@@ -1,0 +1,21 @@
+{% extends "inc/base_usuario.html" %}
+
+{% block title %}Projetos{% endblock %}
+{% block titleheader %}
+
+<h1 style="display:inline;margin-right:20px">Projetos</h1>
+<a href="criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar novo</a>
+<a href="criar" class="btn black"><img src="{{ static }}/img/pesquisar_64.png" height="20" width="20"> Pesquisar outros projetos</a>
+
+{% endblock %}
+
+
+{% block main %}
+<ul class="nav nav-pills" style="display:inline">
+  <li role="presentation"></li>
+  <li role="presentation"><a href="andamento">Em andamento <span class="label label-primary">9</span></a></li>
+  <li role="presentation"><a href="concluidos">Concluídos <span class="label label-success">9</span></a></li>
+  <li role="presentation"><a href="cancelados">Cancelados <span class="label label-danger">9</span></a></li>
+  <li role="presentation"><a href="todos">Todos <span class="label label-default">9</span></a></li>
+</ul>
+{% endblock %}

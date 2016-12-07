@@ -1,0 +1,57 @@
+{% extends "inc/base_usuario.html" %}
+
+{% block title %}Criar novo projeto{% endblock %}
+{% block titleheader %}
+
+<h1 style="display:inline;margin-right:20px">Projetos</h1>
+<a href="criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar novo</a>
+<a href="criar" class="btn black"><img src="{{ static }}/img/pesquisar_64.png" height="20" width="20"> Pesquisar outros projetos</a>
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">	
+	<div class="col-lg-6">
+		<h3>Criar novo projeto</h3>
+		<form method="POST" action="criar">
+
+			<div class="form-group">			
+				<label for="titulo">Título *</label>				
+				<input type="text" name="titulo" id="titulo" required class="form-control">
+			</div>
+			
+			<div class="form-group">
+				<label for="resumo">Resumo *</label>				
+				<textarea name="resumo" rows="2" required class="form-control"></textarea>
+			</div>
+		
+			<div class="form-group">
+				<label for="descricao">Descrição</label>				
+				<textarea name="descricao" rows="4" class="form-control"></textarea>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">			
+						<label for="dominio">Domínio * <span class="text-muted">até 16 caracteres e pontos</span></label>				
+						<input type="text" name="dominio" id="dominio" maxlength="16" pattern="[A-Za-z.]{5,16}" required class="form-control">
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">			
+						<label for="visibilidade">Visibilidade</label>				
+						<select name="visibilidade" id="visibilidade" class="form-control">
+							<option value="1">Privado</option>
+							<option value="2">Público</option>			
+						</select>
+					</div>	
+				</div>
+			</div>
+		
+			<div class="form-group text-right">
+				<input type="submit" id="criar" value="Criar projeto" class="btn rose" class="form-control">
+			</div>
+	</div>
+</div>
+{% endblock %}

@@ -32,6 +32,7 @@ $app->mount('/dev', require 'dev.php'); //debug
 $app->mount('/saticon', require 'saticon.php');
 $app->mount('/conta', require 'conta.php');
 $app->mount('/perfil', require 'perfil.php');
+$app->mount('/projeto', require 'projeto.php');
 
 $app->match('/', function () use ($app) { 
 	if (null === $user = $app['session']->get('conta_usuario')){
@@ -147,9 +148,9 @@ $app->match('/sair', function () use ($app) {
 });
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {	
-	/*if($app['debug']==true){
+	if($app['debug']==true){
 		return;
-	}*/	
+	}
     switch ($code) {
         case 404:
             $msg = 'Página não encontrada!';			

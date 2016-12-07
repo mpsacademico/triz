@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ static }}/css/triz.css">
         {% endblock %}
     </head>
-    <body class="fixed-body">	
+    <body class="fixed-body" style="background-color:white">	
 		{% block body %} 
 		<nav class="navbar navbar-default navbar-fixed-top" style="background-color:white">
   <div class="container-fluid">
@@ -75,14 +75,44 @@
 </nav>
 
 
+<div class="container-fluid rose">
+	<div class="row">
+		<div class="col-lg-12">
+			<h3>Sistema de Gestão Comercial de Varejo e Atacado Internacional</h3>
+			
+	</div>
+	
+	</div>
+	
+</div>
+
+
+  <div class="container-fluid">
+    
+    
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span><strong>Opções</strong>
+      </button> 
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2" >
+      <ul class="nav navbar-nav">
+        <li><a href="/projeto/sigecomv/geral">Geral</a></li>
+        <li><a href="/projeto/sigecomv/membros">Membros</a></li>
+		<li><a href="/perfil">Backlog</a></li>   
+		<li><a href="/perfil">Releases</a></li>   
+		<li><a href="/">Sprints</a></li>
+        <li><a href="/projeto">Quadro</a></li>
+		<li><a href="/perfil">Orçamento</a></li>   
+		<li><a href="/perfil">Relatórios</a></li> 
+		<li><a href="/perfil">Configurações</a></li> 
+		
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->  
+
 
 		<div class="container">	
-			<header>	
-						
-						<div class="page-header">
-							{% block titleheader %}Triz{% endblock %}
-						</div>
-					</header>
+			
 			<div class="row">		
 				<div class="col-lg-12">				
 				<main>
