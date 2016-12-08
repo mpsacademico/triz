@@ -1,0 +1,14 @@
+<h4>Visibilidade</h4>
+<p>Decida o nível de privacidade do {{ p.dominio }}</p>
+<div class="list-group">
+  <a href="/projeto/{{p.dominio}}/configuracoes/visibilidade/editar/privado" class="list-group-item {%if pr is defined %}list-group-item-success  active{% endif %}">
+	<p><img src="{{ static }}/img/privado_64.png" height="64px" width="64px"></p>
+	<h4 class="list-group-item-heading">Privado</h4>
+	<p class="list-group-item-text">Somente os membros podem acessar o projeto</p>
+  </a>
+  <a href="/projeto/{{p.dominio}}/configuracoes/visibilidade/editar/publico" class="list-group-item {%if pu is defined %}list-group-item-success  active{% endif %}">
+	<p><img src="{{ static }}/img/publico_64.png" height="64px" width="64px"></p>
+	<h4 class="list-group-item-heading">Público</h4>
+	<p class="list-group-item-text">Demais usuários podem acessar a página pública do projeto</p>
+  </a>
+</div>

@@ -12,36 +12,25 @@
 
 {% block main %}
 <div class="row">
-	<div class="col-lg-2">
-		<h3>Configurações</h3>
-	</div>
+	
+		<div class="page-header">
+			<h4><strong>Configurações</strong></h4>
+		</div>
+	
 </div>
 <div class="row">
-	<div class="col-lg-2">
+	<div class="col-lg-2" style="background-color:#fbfbfb;border-right: 1px solid #eee;">
 		<ul class="nav nav-pills nav-stacked">
-		  <li role="presentation"><a href="#">Visibilidade</a></li>
-		  <li role="presentation"><a href="#">Cancelamento</a></li>
-		  <li role="presentation"><a href="#">Desativação</a></li>
+		  <li role="presentation"><a href="/projeto/{{p.dominio}}/configuracoes">Sobre</a></li>
+		  <li role="presentation"><a href="/projeto/{{p.dominio}}/configuracoes/visibilidade">Visibilidade</a></li>
+		  <li role="presentation"><a href="/projeto/{{p.dominio}}/configuracoes/desativacao">Desativação</a></li>
+		  <li role="presentation"><a href="/projeto/{{p.dominio}}/configuracoes/cancelamento">Cancelamento</a></li>		  
 		</ul>
 	</div>
-	<div class="col-lg-10">
-		<h4>Cancelamento</h4>
-		<p>O projeto falhou?</p>
-		<button type="button" class="btn btn-danger active">Cancelar o projeto permanentemente</button>
+	
+	<div class="col-lg-10">	
+		{% include "inc/page_projeto_d_configuracoes_"~secao~".html" %}
 	</div>
-	<!--<div class="col-lg-10">
-		<div class="list-group">
-		  <a href="/projeto/{{p.dominio}}/visibilidade/editar/privado" class="list-group-item list-group-item-success active">
-			<p><img src="{{ static }}/img/privado_64.png" height="64px" width="64px"></p>
-			<h4 class="list-group-item-heading">Privado</h4>
-			<p class="list-group-item-text">Somente os membros podem acessar ao projeto</p>
-		  </a>
-		  <a href="/projeto/{{p.dominio}}/visibilidade/editar/publico" class="list-group-item">
-			<p><img src="{{ static }}/img/publico_64.png" height="64px" width="64px"></p>
-			<h4 class="list-group-item-heading">Público</h4>
-			<p class="list-group-item-text">Demais usuários podem acessar a página pública do projeto</p>
-		  </a>
-		</div>
-	</div>-->
+	
 </div>
 {% endblock %}

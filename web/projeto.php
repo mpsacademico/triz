@@ -73,7 +73,8 @@ $projeto->match('membros', function() use($app) {
 })
 ->before($protector);
 
-$projeto->match('/{dominio}/configuracoes', function($dominio) use($app) {
+$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {
+	
 	try {
 		$conn = nconn();		
 		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
@@ -81,12 +82,53 @@ $projeto->match('/{dominio}/configuracoes', function($dominio) use($app) {
 		//$stmt->bindParam(':id', $id);
 		$stmt->bindParam(':dominio', $dominio);
 		$stmt->execute();
-		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$rs = $stmt->fetch(PDO::FETCH_ASSOC);		
+		if($rs["visibilidade"]==1){
+			$cha_v = "pr";
+		}else{
+			$cha_v = "pu";
+		}
 			
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }
-	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs[0]));
+
+	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao,"$cha_v"=>"vi"));
+})
+->value('secao', 'sobre')
+->before($protector);
+
+$projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', function($dominio, $estado) use($app) {
+	try {
+		$conn = nconn();		
+		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
+		$stmt = $conn->prepare($sql);		
+		//$stmt->bindParam(':id', $id);
+		$stmt->bindParam(':dominio', $dominio);
+		$stmt->execute();
+		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);	
+			
+			//return $app->redirect("membros");
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	if($estado=="privado"){
+		$estado = 1;
+	}else{
+		$estado = 2;
+	}	
+	try {
+		$conn = nconn();		
+		$sql = "UPDATE tz_projeto SET visibilidade = :estado WHERE dominio = :dominio;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':estado', $estado);
+		$stmt->bindParam(':dominio', $dominio);
+		$e = $stmt->execute();		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+
+	return $app->redirect("/projeto/$dominio/configuracoes/visibilidade");
 })
 ->before($protector);
 
