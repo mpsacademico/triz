@@ -4,7 +4,7 @@
 {% block titleheader %}
 
 <h1 style="display:inline;margin-right:20px">Projetos</h1>
-<a href="criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar novo</a>
+<a href="/projeto/criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar novo</a>
 <a href="criar" class="btn black"><img src="{{ static }}/img/pesquisar_64.png" height="20" width="20"> Pesquisar outros projetos</a>
 
 {% endblock %}
@@ -13,9 +13,27 @@
 {% block main %}
 <ul class="nav nav-pills" style="display:inline">
   <li role="presentation"></li>
-  <li role="presentation"><a href="andamento">Em andamento <span class="label label-primary">9</span></a></li>
-  <li role="presentation"><a href="concluidos">Concluídos <span class="label label-success">9</span></a></li>
-  <li role="presentation"><a href="cancelados">Cancelados <span class="label label-danger">9</span></a></li>
-  <li role="presentation"><a href="todos">Todos <span class="label label-default">9</span></a></li>
+  <li role="presentation"><a href="andamento">Em andamento <span class="label label-primary"></span></a></li>
+  <li role="presentation"><a href="concluidos">Concluídos <span class="label label-success"></span></a></li>
+  <li role="presentation"><a href="cancelados">Cancelados <span class="label label-danger"></span></a></li>
+  <li role="presentation"><a href="todos">Todos <span class="label label-default"></span></a></li>
 </ul>
+
+<ul class="media-list">
+{% for p in projetos %}
+  <li class="media alert-default">
+    <div class="media-left">
+      <a href="/projeto/{{p.dominio}}">
+		<span class="media-object" src="..." alt="..." style="background:#fdcc52 url({{ducs}}/projeto/perfil/{{ss.imagem}}.{{ss.ext_imagem}});background-position:center;background-repeat:no-repeat;background-size:auto 64px;height:64px;width:64px;">
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading"><a href="/projeto/{{p.dominio}}">{{p.titulo}}</a></h4>	 
+      <small><a href="/perfil/{{p.id_conta_usuario}}" class="text-muted">{{p.nome}}</a> | {{p.ts_criacao|date("d/m/Y H:i")}}</small>
+	  <p><a href="/projeto/{{p.dominio}}">{{p.dominio}}</a></p>
+    </div>
+  </li>
+{% endfor %}
+</ul>
+
 {% endblock %}

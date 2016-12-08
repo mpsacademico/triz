@@ -11,6 +11,7 @@
 
 
 {% block main %}
+
 <div class="row">	
 	<div class="col-lg-6">
 		<h3>Criar novo projeto</h3>
@@ -18,24 +19,24 @@
 
 			<div class="form-group">			
 				<label for="titulo">Título *</label>				
-				<input type="text" name="titulo" id="titulo" required class="form-control">
+				<input type="text" name="titulo" id="titulo" value="{% if post.titulo is defined %}{{post.titulo}}{% endif %}" required class="form-control">
 			</div>
 			
 			<div class="form-group">
 				<label for="resumo">Resumo *</label>				
-				<textarea name="resumo" rows="2" required class="form-control"></textarea>
+				<textarea name="resumo" rows="2" required class="form-control">{% if post.resumo is defined %}{{post.resumo}}{% endif %}</textarea>
 			</div>
 		
 			<div class="form-group">
 				<label for="descricao">Descrição</label>				
-				<textarea name="descricao" rows="4" class="form-control"></textarea>
+				<textarea name="descricao" rows="4" class="form-control">{% if post.descricao is defined %}{{post.descricao}}{% endif %}</textarea>
 			</div>
 			
 			<div class="row">
 				<div class="col-lg-6">
-					<div class="form-group">			
-						<label for="dominio">Domínio * <span class="text-muted">até 16 caracteres e pontos</span></label>				
-						<input type="text" name="dominio" id="dominio" maxlength="16" pattern="[A-Za-z.]{5,16}" required class="form-control">
+					<div class="form-group {% if erro is defined %}has-error{% endif %}">			
+						<label for="dominio" class="control-label">Domínio * <span class="text-muted">16 caracteres (A-Z e ponto)</span></label>				
+						<input type="text" name="dominio" id="dominio" value="{% if post.dominio is defined %}{{post.dominio}}{% endif %}" maxlength="16" pattern="[A-Za-z.]{5,16}" required class="form-control">
 					</div>
 				</div>
 				<div class="col-lg-6">
