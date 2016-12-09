@@ -1,2 +1,28 @@
 <h4>Sobre</h4>
-<p>Visualize alguns dados básicos sobre o projeto</p>
+<p>Visualize dados básicos sobre o projeto</p>
+<div class="table-responsive">
+	<table class="table table-striped">
+	  <tbody>	
+		<tr>
+		  <th>Domínio</th>
+		  <td>{{p.dominio}}</td>		  
+		</tr>
+		<tr>
+		  <th>Situação</th>
+		  <td><span class="text-uppercase">{{s}}</span></td>		  
+		</tr>
+		<tr>
+		  <th>Visibilidade</th>
+		  <td><span class="text-uppercase">{{v}}</span></td>		  
+		</tr>		
+		<tr>
+		  <th>Criado por</th>
+		  <td><a href="/perfil/{{p.id_conta_usuario}}" title="Visualizar perfil de {{p.nome}} {{p.sobrenome}}" target="_blank">{{p.nome}} {{p.sobrenome}}</a></td>		  
+		</tr>
+		<tr>
+		  <th>Data de criação</th>
+		  <td>{{p.ts_criacao|date("d/m/Y \\à\\s H:i")}}</td>		  
+		</tr>
+	  </tbody>
+	</table>
+</div>

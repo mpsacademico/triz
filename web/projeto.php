@@ -85,15 +85,23 @@ $projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) u
 		$rs = $stmt->fetch(PDO::FETCH_ASSOC);		
 		if($rs["visibilidade"]==1){
 			$cha_v = "pr";
+			$v = "privado";
 		}else{
 			$cha_v = "pu";
+			$v = "público";
 		}
-			
+		if($rs["situacao"]==0){
+			$s = "em andamento";
+		}else if($rs["situacao"]==1){
+			$s = "desativado";
+		}else if($rs["situacao"]==2){
+			$s = "cancelado";
+		}			
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }
 
-	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao,"$cha_v"=>"vi"));
+	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao,"$cha_v"=>"vi","v"=>$v,"s"=>$s));
 })
 ->value('secao', 'sobre')
 ->before($protector);
