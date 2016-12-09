@@ -1,0 +1,41 @@
+{% extends "inc/base_usuario.html" %}
+
+{% block title %}Conta de Usuário{% endblock %}
+{% block titleheader %}<h1>Conta de Usuário</h1>{% endblock %}
+
+{% block main %}
+	<div class="table-responsive">	
+		<table class="table table-borderless">
+		  <tbody>	
+			<tr>
+			  <th>Primeiro Nome</th>
+			  <td>{{rs.nome}}</td>		  
+			</tr>
+			<tr>
+			  <th>Sobrenome</th>
+			  <td>{{rs.sobrenome}}</td>		  
+			</tr>
+			<tr>
+			  <th>Data de Nascimento</th>
+			  <td>{{rs.dt_nascimento|date("d/m/Y")}}</td>		  
+			</tr>
+			<tr>
+			  <th>Gênero</th>
+			  <td>{%if rs.sexo == "m"%}Masculino{%elseif rs.sexo == "f"%}Feminino{%else%}Outro{%endif%}</td>		  
+			</tr>
+			<tr>
+			  <th>E-mail</th>
+			  <td>{{rs.email}}</td>		  
+			</tr>
+			<tr>
+			  <th>Data de Criação</th>
+			  <td>{{rs.ts_criacao|date("d/m/Y \\à\\s H:i")}}</td>		  
+			</tr>
+			<tr>
+			  <th>Estado da Conta</th>
+			  <td>{{rs.estado}}</td>		  
+			</tr>
+		  </tbody>
+		</table>
+	</div>
+{% endblock %}

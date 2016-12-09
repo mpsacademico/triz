@@ -129,5 +129,31 @@ $conta->match('/acesso', function () use ($app) {
 })
 ->before($protector);
 
+$conta->match('/ver', function () use ($app) {
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+	try {
+		$conn = nconn();
+		$sql = "SELECT id_conta_usuario, nome, sobrenome, dt_nascimento, sexo, email, ts_criacao, estado FROM tz_conta_usuario WHERE id_conta_usuario = :id_conta_usuario;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);
+		$stmt->execute();
+		$rs = $stmt->fetch(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	$conn = null;	
+	return $app['twig']->render('page_conta_ver.html', array("rs" => $rs));
+})
+->before($protector);
+
+$conta->match('/senha', function () use ($app) {
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+		
+	return $app['twig']->render('form_senha.html');
+})
+->before($protector);
+
 return $conta;
 ?>
