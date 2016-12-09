@@ -50,20 +50,8 @@ $projeto->post('/criar', function() use($app) {
 ->before($protector);
 
 $projeto->match('/{dominio}', function($dominio) use($app) {
-	try {
-		$conn = nconn();		
-		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		//$stmt->bindParam(':id', $id);
-		$stmt->bindParam(':dominio', $dominio);
-		$stmt->execute();
-		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);	
-			var_dump($rs);
-			//return $app->redirect("membros");
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }	
-	return $app['twig']->render('page_projeto_v-dominio.html',array("p"=>$rs[0]));
+	$rs = rproj($dominio);
+	return $app['twig']->render('page_projeto_v-dominio.html',array("p"=>$rs));
 })
 ->before($protector);
 
@@ -73,53 +61,26 @@ $projeto->match('membros', function() use($app) {
 })
 ->before($protector);
 
-$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {
-	
-	try {
-		$conn = nconn();		
-		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		//$stmt->bindParam(':id', $id);
-		$stmt->bindParam(':dominio', $dominio);
-		$stmt->execute();
-		$rs = $stmt->fetch(PDO::FETCH_ASSOC);		
-		if($rs["visibilidade"]==1){
-			$cha_v = "pr";
-			$v = "privado";
-		}else{
-			$cha_v = "pu";
-			$v = "público";
-		}
-		if($rs["situacao"]==0){
-			$s = "em andamento";
-		}else if($rs["situacao"]==1){
-			$s = "desativado";
-		}else if($rs["situacao"]==2){
-			$s = "cancelado";
-		}			
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-
-	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao,"$cha_v"=>"vi","v"=>$v,"s"=>$s));
+$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {			
+	$rs = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao));
 })
 ->value('secao', 'sobre')
 ->before($protector);
 
-$projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', function($dominio, $estado) use($app) {
-	try {
-		$conn = nconn();		
-		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		//$stmt->bindParam(':id', $id);
-		$stmt->bindParam(':dominio', $dominio);
-		$stmt->execute();
-		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);	
-			
-			//return $app->redirect("membros");
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }	
+$projeto->match('/{dominio}/relatorios', function($dominio) use($app) {	
+	$rs = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_relatorios.html',array("p"=>$rs));
+})
+->before($protector);
+
+$projeto->match('/{dominio}/relatorios/{tipo}', function($dominio, $tipo) use($app) {	
+	$rs = rproj($dominio);
+	return "gerando relatório";
+})
+->before($protector);
+
+$projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', function($dominio, $estado) use($app) {	
 	if($estado=="privado"){
 		$estado = 1;
 	}else{
@@ -135,7 +96,6 @@ $projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', functio
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }
-
 	return $app->redirect("/projeto/$dominio/configuracoes/visibilidade");
 })
 ->before($protector);
@@ -173,6 +133,37 @@ $projeto->match('/listar/{situacao}', function($situacao) use($app) {
 	return $app['twig']->render('page_projeto_todos.html',array("projetos"=>$rs));
 })
 ->before($protector);
+
+function rproj($dominio){
+	try {
+		$conn = nconn();		
+		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND p.dominio = :dominio;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':dominio', $dominio);
+		$stmt->execute();
+		$rs = $stmt->fetch(PDO::FETCH_ASSOC);	
+		if($rs["visibilidade"]==1){
+			$cha_v = "pr";
+			$v = "privado";
+		}else{
+			$cha_v = "pu";
+			$v = "público";
+		}
+		if($rs["situacao"]==0){
+			$s = "em andamento";
+		}else if($rs["situacao"]==1){
+			$s = "desativado";
+		}else if($rs["situacao"]==2){
+			$s = "cancelado";
+		}	
+		$rs["$cha_v"] = "vi";
+		$rs["v"] = $v;
+		$rs["s"] = $s;
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $rs;
+}
 
 return $projeto;
 ?>

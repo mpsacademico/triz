@@ -1,0 +1,42 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Relatórios{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4><strong>Relatórios</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<div class="list-group">
+		  <a href="/projeto/{{p.dominio}}/relatorios/status" target="_blank" class="list-group-item">
+			<p><img src="{{ static }}/img/status_proj_64.png" height="64px" width="64px"></p>
+			<h4 class="list-group-item-heading">Status do Projeto</h4>
+			<p class="list-group-item-text">Visão resumida da situação do projeto até o dia corrente</p>
+		  </a>
+		</div>
+		<div class="list-group">
+		  <a href="/projeto/{{p.dominio}}/relatorios/especificacao" target="_blank" class="list-group-item">
+			<p><img src="{{ static }}/img/especificacao_funcional_64.png" height="64px" width="64px"></p>
+			<h4 class="list-group-item-heading">Especificação Funcional</h4>
+			<p class="list-group-item-text">Listagem das funcionalidades que compõe o produto</p>
+		  </a>
+		</div>
+		<div class="list-group">
+		  <a href="/projeto/{{p.dominio}}/relatorios/geral" target="_blank" class="list-group-item">
+			<p><img src="{{ static }}/img/relatorio_geral_64.png" height="64px" width="64px"></p>
+			<h4 class="list-group-item-heading">Relatório Geral Completo</h4>
+			<p class="list-group-item-text">Descrição completa das seções que compõe o projeto</p>
+		  </a>
+		</div>
+	</div>	
+</div>
+{% endblock %}

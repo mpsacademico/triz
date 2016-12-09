@@ -19,9 +19,13 @@
   <li role="presentation"><a href="todos">Todos <span class="label label-default"></span></a></li>
 </ul>
 
-<ul class="media-list">
+<ul class="media-list" style="margin-top:10px">
 {% for p in projetos %}
-  <li class="media alert-default">
+  <li class="media" style="margin:0px;">
+  <div class="panel panel-default">
+  <div class="panel-body">
+  <div class="row">
+	<div class="col-lg-11">
     <div class="media-left">
       <a href="/projeto/{{p.dominio}}">
 		<span class="media-object" src="..." alt="..." style="background:#fdcc52 url({{ducs}}/projeto/perfil/{{ss.imagem}}.{{ss.ext_imagem}});background-position:center;background-repeat:no-repeat;background-size:auto 64px;height:64px;width:64px;">
@@ -32,6 +36,13 @@
       <small><a href="/perfil/{{p.id_conta_usuario}}" class="text-muted">{{p.nome}}</a> | {{p.ts_criacao|date("d/m/Y H:i")}}</small>
 	  <p><a href="/projeto/{{p.dominio}}">{{p.dominio}}</a></p>
     </div>
+	</div>
+	<div class="col-lg-1 text-right">
+		<a href="/projeto/{{p.dominio}}/configuracoes"><img src="{{ static }}/img/configuracoes_64.png" title="Ir para as configurações do {{p.dominio}}" height="20" width="20"></a>
+	</div>
+	</div>
+	 </div>
+</div>
   </li>
 {% endfor %}
 </ul>
