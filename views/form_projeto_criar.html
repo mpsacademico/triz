@@ -35,8 +35,8 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="form-group {% if erro is defined %}has-error{% endif %}">			
-						<label for="dominio" class="control-label">Domínio * <span class="text-muted">16 caracteres (A-Z e ponto)</span></label>				
-						<input type="text" name="dominio" id="dominio" value="{% if post.dominio is defined %}{{post.dominio}}{% endif %}" maxlength="16" pattern="[A-Za-z.]{5,16}" required class="form-control">
+						<label for="dominio" class="control-label">Domínio * <span class="text-muted">16 caracteres (A-Z e traço)</span></label>				
+						<input type="text" name="dominio" id="dominio" value="{% if post.dominio is defined %}{{post.dominio}}{% endif %}" maxlength="16" pattern="[A-Za-z-]{5,16}" required class="form-control">
 					</div>
 				</div>
 				<div class="col-lg-6">

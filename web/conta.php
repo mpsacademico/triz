@@ -147,11 +147,17 @@ $conta->match('/ver', function () use ($app) {
 })
 ->before($protector);
 
-$conta->match('/senha', function () use ($app) {
+$conta->get('/senha', function () use ($app) {
 	$usuario = $app['session']->get('conta_usuario');
-	$id_conta_usuario = $usuario['id_conta_usuario'];
-		
+	$id_conta_usuario = $usuario['id_conta_usuario'];		
 	return $app['twig']->render('form_senha.html');
+})
+->before($protector);
+
+$conta->post('/senha', function () use ($app) {
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];		
+	return	$app->redirect("/conta/senha");
 })
 ->before($protector);
 

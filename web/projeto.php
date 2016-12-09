@@ -38,7 +38,7 @@ $projeto->post('/criar', function() use($app) {
 			$stmt->bindParam(':visibilidade', $visibilidade);
 			$stmt->bindParam(':id', $id);
 			$e = $stmt->execute();		
-			return $app->redirect("/projeto/$dominio/geral");
+			return $app->redirect("/projeto/$dominio");
 		}else{
 			return $app['twig']->render('form_projeto_criar.html', array("post" => $_POST, "erro" => 1));	
 		}		
@@ -100,6 +100,34 @@ $projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', functio
 })
 ->before($protector);
 
+$projeto->match('/{dominio}/configuracoes/desativacao/concluir', function($dominio) use($app) {	
+	try {
+		$conn = nconn();		
+		$sql = "UPDATE tz_projeto SET situacao = 1 WHERE dominio = :dominio;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':dominio', $dominio);
+		$e = $stmt->execute();		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $app->redirect("/projeto/$dominio/configuracoes");
+})
+->before($protector);
+
+$projeto->match('/{dominio}/configuracoes/cancelamento/cancelar', function($dominio) use($app) {	
+	try {
+		$conn = nconn();		
+		$sql = "UPDATE tz_projeto SET situacao = 2 WHERE dominio = :dominio;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':dominio', $dominio);
+		$e = $stmt->execute();		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $app->redirect("/projeto/$dominio/configuracoes");
+})
+->before($protector);
+
 $projeto->match('/listar/{situacao}', function($situacao) use($app) {	
 	$user = $app['session']->get('conta_usuario');
 	$id = $user['id_conta_usuario'];
@@ -122,7 +150,7 @@ $projeto->match('/listar/{situacao}', function($situacao) use($app) {
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
 		$rsc = $stmt->fetchAll(PDO::FETCH_ASSOC);*/
-		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND c.id_conta_usuario = :id $s ORDER BY p.ts_criacao ASC;";
+		$sql = "SELECT p.*, c.nome, c.sobrenome FROM tz_projeto AS p, tz_conta_usuario AS c WHERE p.id_conta_usuario = c.id_conta_usuario AND c.id_conta_usuario = :id $s ORDER BY p.ts_criacao DESC;";
 		$stmt = $conn->prepare($sql);		
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
