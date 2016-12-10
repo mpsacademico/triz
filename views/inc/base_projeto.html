@@ -22,32 +22,40 @@
 <div class="container-fluid rose">
 	<div class="row">
 		<div class="col-lg-12">
-			<h3>{{p.titulo}}</h3>
-			
+			<h3>{{p.titulo}}</h3>			
+		</div>	
 	</div>
 	
+	
+
+	
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false" style="float:none;margin:0px;">
+        <span class="sr-only">Toggle navigation</span><strong style="font-size:22px">...</strong>
+      </button> 	
+		</div>
+		
 	</div>
 	
 </div>
 
-
   <div class="container-fluid">
     
     
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span><strong>Opções</strong>
-      </button> 
+
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2" >
       <ul class="nav navbar-nav">
-        <li><a href="/projeto/{{p.dominio}}/geral">Geral</a></li>
+        <li><a href="/projeto/{{p.dominio}}">Geral</a></li>
         <li><a href="/projeto/{{p.dominio}}/membros">Membros</a></li>
 		<li><a href="/projeto/{{p.dominio}}/backlog">Backlog</a></li>   
 		<li><a href="/projeto/{{p.dominio}}/releases">Releases</a></li>   
 		<li><a href="/projeto/{{p.dominio}}/sprints">Sprints</a></li>
         <li><a href="/projeto/{{p.dominio}}/quadro">Quadro</a></li>		
 		<li><a href="/projeto/{{p.dominio}}/relatorios">Relatórios</a></li> 
-		<li style="background-color:#fcf8ee"><a href="/projeto/{{p.dominio}}/configuracoes">Configurações</a></li> 
+		<li><a href="/projeto/{{p.dominio}}/configuracoes">Configurações</a></li> 
 		
       </ul>
     </div><!-- /.navbar-collapse -->

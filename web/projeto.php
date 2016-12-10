@@ -38,6 +38,11 @@ $projeto->post('/criar', function() use($app) {
 			$stmt->bindParam(':visibilidade', $visibilidade);
 			$stmt->bindParam(':id', $id);
 			$e = $stmt->execute();		
+			$id_projeto = $conn->lastInsertId();
+			$sql = "INSERT INTO tz_time (id_projeto, nome, ordem, visibilidade, ts_criacao) VALUES (:id_projeto, '1', '1', '1', CURRENT_TIMESTAMP)";
+			$stmt = $conn->prepare($sql);
+			$stmt->bindParam(':id_projeto', $id_projeto);
+			$stmt->execute();
 			return $app->redirect("/projeto/$dominio");
 		}else{
 			return $app['twig']->render('form_projeto_criar.html', array("post" => $_POST, "erro" => 1));	
@@ -51,21 +56,27 @@ $projeto->post('/criar', function() use($app) {
 
 $projeto->match('/{dominio}', function($dominio) use($app) {
 	$rs = rproj($dominio);
-	return $app['twig']->render('page_projeto_v-dominio.html',array("p"=>$rs));
+	if($rs==false){
+		$app->abort(404, 'O projeto "'.$dominio.'" não existe!');
+	}	
+	return $app['twig']->render('page_projeto_d.html',array("p"=>$rs));
 })
 ->before($protector);
 
-$projeto->match('membros', function() use($app) {
-	
-	return "teste";
-})
-->before($protector);
-
-$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {			
+$projeto->match('/{dominio}/membros', function($dominio) use($app) {
 	$rs = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao));
+	try {
+		$conn = nconn();		
+		$sql = "SELECT * FROM tz_time WHERE id_projeto = :id_projeto;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':id_projeto', $rs['id_projeto']);
+		$stmt->execute();
+		$rsm = $stmt->fetch(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $app['twig']->render('page_projeto_d_membros.html',array("p"=>$rs,"m"=>$rsm));
 })
-->value('secao', 'sobre')
 ->before($protector);
 
 $projeto->match('/{dominio}/relatorios', function($dominio) use($app) {	
@@ -78,6 +89,13 @@ $projeto->match('/{dominio}/relatorios/{tipo}', function($dominio, $tipo) use($a
 	$rs = rproj($dominio);
 	return "gerando relatório";
 })
+->before($protector);
+
+$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {			
+	$rs = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao));
+})
+->value('secao', 'sobre')
 ->before($protector);
 
 $projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', function($dominio, $estado) use($app) {	
@@ -169,7 +187,8 @@ function rproj($dominio){
 		$stmt = $conn->prepare($sql);		
 		$stmt->bindParam(':dominio', $dominio);
 		$stmt->execute();
-		$rs = $stmt->fetch(PDO::FETCH_ASSOC);	
+		$rs = $stmt->fetch(PDO::FETCH_ASSOC);
+		if($rs==false) return $rs;
 		if($rs["visibilidade"]==1){
 			$cha_v = "pr";
 			$v = "privado";
@@ -189,7 +208,7 @@ function rproj($dominio){
 		$rs["s"] = $s;
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
-    }	
+    }
 	return $rs;
 }
 
