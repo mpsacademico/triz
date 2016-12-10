@@ -41,26 +41,6 @@ $perfil->get('/editar', function() use($app) {
 })
 ->before($protector);
 
-$perfil->match('/{id}', function($id) use($app) {	
-	try {
-		$conn = nconn();
-		$sql = "SELECT c.nome, c.sobrenome, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";
-		$stmt = $conn->prepare($sql);
-		$stmt->bindParam(':id', $id);
-		$stmt->execute();
-		$qt = $stmt->rowCount();
-		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);	
-		if($qt == 1){		
-			return $app['twig']->render('page_perfil.html', $rs[0]);		
-		}		
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-	$conn = null;	
-    return $app->redirect('/perfil');
-})
-->before($protector);
-
 $perfil->post('/editar', function() use($app) {
 
 	$ocupacao = $_POST['ocupacao'];
@@ -133,6 +113,26 @@ $perfil->post('/editar', function() use($app) {
 	}
 	$conn = null;	
 	return $app->redirect('/perfil');    
+})
+->before($protector);
+
+$perfil->match('/{id}', function($id) use($app) {	
+	try {
+		$conn = nconn();
+		$sql = "SELECT c.nome, c.sobrenome, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND p.id_conta_usuario = :id;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+		$qt = $stmt->rowCount();
+		$rs = $stmt->fetchAll(PDO::FETCH_ASSOC);	
+		if($qt == 1){		
+			return $app['twig']->render('page_perfil.html', $rs[0]);		
+		}		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	$conn = null;	
+    return $app->redirect('/perfil');
 })
 ->before($protector);
 

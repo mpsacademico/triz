@@ -22,7 +22,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 $app['destino-ducs'] = 'C:\\xampp\\htdocs\\ducs\\usuario\\perfil\\';
-$app['twig']->addGlobal('static', 'http://'.$_SERVER["SERVER_NAME"].'/triz/static'); //armazenamento de recursos estáticos
+$app['twig']->addGlobal('static', 'http://'.$_SERVER["SERVER_NAME"].'/static'); //armazenamento de recursos estáticos
 $app['twig']->addGlobal('ducs', 'http://'.$_SERVER["SERVER_NAME"].'/ducs'); //serviço de conteúdo de usuário
 
 require_once __DIR__.'/../src/conexao.php';

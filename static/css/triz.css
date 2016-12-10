@@ -17,6 +17,9 @@
 body.fixed-body {
   padding-top: 30px;
 }
+body.fixed-body-perfil {
+  padding-top: 70px;
+}
 .black{
   color: #000;
 }
