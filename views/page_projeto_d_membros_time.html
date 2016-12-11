@@ -1,0 +1,56 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Membros{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4><strong>Membros</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ol class="breadcrumb">
+		  <li><a href="/projeto/{{p.dominio}}/membros">Membros</a></li>
+		  <li><a href="/projeto/{{p.dominio}}/membros/time/{{t.id_time}}">Time</a></li>
+		  <li class="active">Time {{t.nome}}</li>
+		</ol>
+		<div class="table-responsive">
+			<table class="table">
+			  <tbody>	
+				<tr>
+				  <th>Nome do Time</th>
+				  <td>
+					<form method="POST" action="" class="form-inline" style="margin:0">
+						<div class="form-group">
+							<input type="text" id="nome" name="nome" value="{{t.nome}}" class="form-control" required>
+						</div>
+						<input type="submit" value="Alterar" class="btn btn-primary">
+					</form>				  
+				  </td>		  
+				</tr>
+				<tr>
+				  <th>Data de Criação</th>
+				  <td>{{t.ts_criacao|date("d/m/Y \\à\\s H:i")}}</td>	  
+				</tr>
+				<tr>
+				  <th>Ordem de Exibição</th>
+				  <td>{{t.ordem}}</td>		  
+				</tr>		
+				<tr>
+				  <th>Visibilidade</th>
+				  <td>{{t.visibilidade}}</td>		  
+				</tr>		
+			  </tbody>
+			</table>
+		</div>
+	</div>	
+</div>
+	
+
+{% endblock %}

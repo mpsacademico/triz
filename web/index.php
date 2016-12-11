@@ -38,7 +38,19 @@ $app->match('/', function () use ($app) {
 	if (null === $user = $app['session']->get('conta_usuario')){
 		return $app['twig']->render('page_inicio.html');
 	}else{	
-		return $app['twig']->render('page_mural.html');
+		try {
+			$usuario = $app['session']->get('conta_usuario');
+			$id_conta_usuario = $usuario['id_conta_usuario'];
+			$conn = nconn();
+			$sql = "SELECT co.*, cu.nome, cu.sobrenome, pr.titulo, pr.resumo, pr.dominio FROM tz_convite AS co, tz_conta_usuario AS cu, tz_projeto AS pr WHERE co.id_conta_usuario = cu.id_conta_usuario AND co.id_projeto = pr.id_projeto AND co.estado = 1 AND pr.estado = 0 AND co.id_convidado = :id_conta_usuario ORDER BY co.ts_realizacao DESC;";
+			$stmt = $conn->prepare($sql);
+			$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);			
+			$e = $stmt->execute();	
+			$cs = $stmt->fetchAll(PDO::FETCH_ASSOC);			
+		}catch(PDOException $ex){
+			echo "Erro: " . $ex->getMessage();
+		}		
+		return $app['twig']->render('page_mural.html',array("cs"=>$cs));
 	}
 });
 

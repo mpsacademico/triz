@@ -16,29 +16,33 @@
 <div class="row">	
 	<div class="col-lg-6">	
 		<div>
-			<strong>Time {{m.nome}}</strong>
+			<strong>Time {{m.nome}} <a href="/projeto/{{p.dominio}}/membros/time/{{m.id_time}}">Editar</a></strong>
 		</div>
 		<div class="panel panel-default">		  
-		  <div class="panel-body" style="background-color:#feeab9">
+		  <div class="panel-body" style="background-color:#fbfbfb">
 			<div class="row">	
 				<div class="col-lg-6">
-					<div class="panel panel-default">		  
-						<div class="panel-body text-center">
-							<strong>Product Owner</strong>
+					<div class="panel panel-default text-center">		  
+						<div class="panel-body">
+							<strong>Product Owner</strong>							
 						</div>
+						<div class="list-group">
+						  <a href="#" class="list-group-item">
+							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">Selecionar</h4>							
+						  </a>
+						</div>	
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div class="panel panel-default text-center">		  
 						<div class="panel-body">
-							<strong>Scrum Master</strong>
-							
+							<strong>Scrum Master</strong>							
 						</div>
 						<div class="list-group">
 						  <a href="#" class="list-group-item">
-							<div class="img-circle" style="background-color:#feeab9; background-image: url(http://localhost/ducs/usuario/perfil/1481404913584c71f124bdb_5f94b97aa40cd4bea21b0ad36851ffd5_c9f0f895fb98ab9159f51fd0297e236d_1481404913.jpg), url(http://localhost/static/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div>
-							<h4 class="list-group-item-heading">Marcos Paulo da Silva</h4>
-							<p class="list-group-item-text">Designer</p>
+							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">Selecionar</h4>							
 						  </a>
 						</div>	
 					</div>
@@ -48,13 +52,15 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">		  
 						<div class="panel-body text-center">
-							<strong>Time de Desenvolvimento</strong>
+							<strong>Time de Desenvolvimento {#({{ts|length}} integrantes)#}</strong>
 						</div>
 						<div class="list-group">
-						  <a href="#" class="list-group-item">
-							<h4 class="list-group-item-heading">Marcos Paulo da Silva</h4>
-							<p class="list-group-item-text">Designer</p>
+						  {% for t in ts %}
+						  <a href="/projeto/{{p.dominio}}/membros/integrante/{{t.id_integrante}}" class="list-group-item">
+							<h4 class="list-group-item-heading">{{t.nome}}</h4>
+							<p class="list-group-item-text">{{t.funcao}}</p>
 						  </a>
+						  {% endfor %}
 						</div>	
 					</div>
 				</div>				
@@ -62,13 +68,11 @@
 		  </div>
 		</div>	
 	</div>	
-	<div class="col-lg-6">	
+	<div class="col-lg-6" id="busca-convidados">	
 		<div>
-			<strong>Convidados</strong>
+			<strong>Convidar novo membro</strong>
 		</div>
-		<div class="panel panel-default">		  
-		  <div class="panel-body">
-			<form method="GET" action="/projeto/{{p.dominio}}/membros">
+		<form method="GET" action="/projeto/{{p.dominio}}/membros#busca-convidados">
 				<div class="row">
 					<div class="col-lg-10">
 						<div class="form-group">
@@ -80,10 +84,14 @@
 					</div>
 				</div>
 			<form>
+		
+			
 			{% if u == 'null' %}
 			{% elseif u == false %}
 			<div class="alert alert-warning" role="alert"><strong>Nenhum usuário encontrado!</strong></div>
 			{% else %}
+			<div class="panel panel-default">		  
+		  <div class="panel-body">
 			<div class="media">
 			  <div class="media-left media-middle">
 				<span class="media-object img-circle" style="background-color: #feeab9; background-image: url({{ducs}}/usuario/perfil/{{u.imagem}}.{{u.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 100px;height:100px;width:100px;">				
@@ -94,10 +102,15 @@
 				<p><a href="/projeto/{{p.dominio}}/membros/convidar/{{u.id_conta_usuario}}" class="btn btn-success active">Convidar</a></p>
 			  </div>
 			</div>
-			{% endif %}
-		  </div>
-		  
+			 </div>
+		  	
 		 
+		</div>	
+			{% endif %}
+		 
+		<div>
+			<strong>Convidados</strong> <span class="text-muted">({{cs|length}} aguardando resposta)</span>
+		</div>
 		<div class="list-group">
 			{% for c in cs %}			  
 			   <div class="list-group-item">
@@ -107,8 +120,6 @@
 			  </div>			  
 			{% endfor %}
 		</div>
-		 
-		</div>	
 	</div>	
 </div>
 {% endblock %}

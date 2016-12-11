@@ -1,0 +1,56 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Membros{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4><strong>Membros</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ol class="breadcrumb">
+		  <li><a href="/projeto/{{p.dominio}}/membros">Membros</a></li>
+		  <li><a href="/projeto/{{p.dominio}}/membros/integrante/{{i.id_integrante}}">Integrante</a></li>
+		  <li class="active">{{i.nome}} {{i.sobrenome}}</li>
+		</ol>
+		<div class="table-responsive">
+			<table class="table">
+			  <tbody>	
+				<tr>
+				  <th>Função</th>
+				  <td>
+					<form method="POST" action="" class="form-inline" style="margin:0">
+						<div class="form-group">
+							<input type="text" id="funcao" name="funcao" value="{{i.funcao}}" placeholder="Insira o cargo aqui" class="form-control" required>
+						</div>
+						<input type="submit" value="Alterar" class="btn btn-primary">
+					</form>				  
+				  </td>		  
+				</tr>
+				<tr>
+				  <th>Data de Entrada</th>
+				  <td>{{i.ts_resposta|date("d/m/Y \\à\\s H:i")}}</td>	  
+				</tr>
+				<tr>
+				  <th>Papel</th>
+				  <td>{{i.papel}}</td>	  
+				</tr>
+				<tr>
+				  <th>Ações</th>
+				  <td><a href="/perfil/{{i.id_conta_usuario}}">Visitar perfil</a><a href="">Tornar Product Owener</a> <a href="">Tornar Scrum Master</a></td>	  
+				</tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>	
+</div>
+	
+
+{% endblock %}
