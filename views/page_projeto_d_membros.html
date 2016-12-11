@@ -19,8 +19,46 @@
 			<strong>Time {{m.nome}}</strong>
 		</div>
 		<div class="panel panel-default">		  
-		  <div class="panel-body">
-			Panel content
+		  <div class="panel-body" style="background-color:#feeab9">
+			<div class="row">	
+				<div class="col-lg-6">
+					<div class="panel panel-default">		  
+						<div class="panel-body text-center">
+							<strong>Product Owner</strong>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default text-center">		  
+						<div class="panel-body">
+							<strong>Scrum Master</strong>
+							
+						</div>
+						<div class="list-group">
+						  <a href="#" class="list-group-item">
+							<div class="img-circle" style="background-color:#feeab9; background-image: url(http://localhost/ducs/usuario/perfil/1481404913584c71f124bdb_5f94b97aa40cd4bea21b0ad36851ffd5_c9f0f895fb98ab9159f51fd0297e236d_1481404913.jpg), url(http://localhost/static/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div>
+							<h4 class="list-group-item-heading">Marcos Paulo da Silva</h4>
+							<p class="list-group-item-text">Designer</p>
+						  </a>
+						</div>	
+					</div>
+				</div>
+			</div>
+			<div class="row">	
+				<div class="col-lg-12">
+					<div class="panel panel-default">		  
+						<div class="panel-body text-center">
+							<strong>Time de Desenvolvimento</strong>
+						</div>
+						<div class="list-group">
+						  <a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">Marcos Paulo da Silva</h4>
+							<p class="list-group-item-text">Designer</p>
+						  </a>
+						</div>	
+					</div>
+				</div>				
+			</div>
 		  </div>
 		</div>	
 	</div>	
@@ -30,11 +68,11 @@
 		</div>
 		<div class="panel panel-default">		  
 		  <div class="panel-body">
-			<form method="GET" action="/projeto/{{p.dominio}}/membros/buscar">
+			<form method="GET" action="/projeto/{{p.dominio}}/membros">
 				<div class="row">
 					<div class="col-lg-10">
 						<div class="form-group">
-							<input type="text" id="email" name="email" placeholder="Buscar usuário por e-mail..." class="form-control">			
+							<input type="text" id="email" name="email" value="{{email}}" placeholder="Buscar usuário por e-mail..." required class="form-control">			
 						</div>
 					</div>
 					<div class="col-lg-2">
@@ -42,14 +80,34 @@
 					</div>
 				</div>
 			<form>
+			{% if u == 'null' %}
+			{% elseif u == false %}
+			<div class="alert alert-warning" role="alert"><strong>Nenhum usuário encontrado!</strong></div>
+			{% else %}
+			<div class="media">
+			  <div class="media-left media-middle">
+				<span class="media-object img-circle" style="background-color: #feeab9; background-image: url({{ducs}}/usuario/perfil/{{u.imagem}}.{{u.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 100px;height:100px;width:100px;">				
+			  </div>
+			  <div class="media-body">
+				<h4 class="media-heading">{{u.nome}} {{u.sobrenome}} <small><a href="/perfil/{{u.id_conta_usuario}}" target="_blank">Ver perfil</a></small></h4>
+				<p><em>{{u.ocupacao}}</em></p>
+				<p><a href="/projeto/{{p.dominio}}/membros/convidar/{{u.id_conta_usuario}}" class="btn btn-success active">Convidar</a></p>
+			  </div>
+			</div>
+			{% endif %}
 		  </div>
-		  <ul class="list-group">
-			<li class="list-group-item">Cras justo odio</li>
-			<li class="list-group-item">Dapibus ac facilisis in</li>
-			<li class="list-group-item">Morbi leo risus</li>
-			<li class="list-group-item">Porta ac consectetur ac</li>
-			<li class="list-group-item">Vestibulum at eros</li>
-		  </ul>
+		  
+		 
+		<div class="list-group">
+			{% for c in cs %}			  
+			   <div class="list-group-item">
+				<h5 class="list-group-item-heading"><strong><a href="/perfil/{{c.id_convidado}}" target="_blank"> {{c.nomec}} {{c.sobrenomec}}</a></strong> <em>{{c.emailc}}</em></h5>				
+				<p class="list-group-item-text"><small>Enviado em {{c.ts_realizacao|date("d/m/Y \\à\\s H:i")}} por <a href="/perfil/{{c.id_conta_usuario}}" target="_blank"> {{c.nome}} {{c.sobrenome}}</a></small></p>
+				<!--<a href="remover" class="btn btn-sm btn-danger">X</a>-->
+			  </div>			  
+			{% endfor %}
+		</div>
+		 
 		</div>	
 	</div>	
 </div>

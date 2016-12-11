@@ -65,17 +65,57 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 
 $projeto->match('/{dominio}/membros', function($dominio) use($app) {
 	$rs = rproj($dominio);
+	$rsu = 'null';
+	$email = '';
+	if(isset($_GET['email'])){
+		try {
+			$conn = nconn();		
+			$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.estado = 1 AND c.email = :email;";
+			$stmt = $conn->prepare($sql);		
+			$stmt->bindParam(':email', $_GET['email']);
+			$stmt->execute();
+			$rsu = $stmt->fetch(PDO::FETCH_ASSOC);
+			$email = $_GET['email'];
+		}catch(PDOException $ex){
+			echo "Erro: " . $ex->getMessage();
+		}		
+	}
 	try {
 		$conn = nconn();		
 		$sql = "SELECT * FROM tz_time WHERE id_projeto = :id_projeto;";
 		$stmt = $conn->prepare($sql);		
 		$stmt->bindParam(':id_projeto', $rs['id_projeto']);
 		$stmt->execute();
-		$rsm = $stmt->fetch(PDO::FETCH_ASSOC);		
+		$rst = $stmt->fetch(PDO::FETCH_ASSOC);	
+		$sql = "SELECT con.id_convite, con.ts_realizacao, con.estado, cou.id_conta_usuario, cou.nome, cou.sobrenome, uco.id_conta_usuario AS id_convidado, uco.nome AS nomec, uco.sobrenome AS sobrenomec, uco.email AS emailc FROM tz_convite AS con , tz_conta_usuario AS cou, tz_conta_usuario AS uco WHERE con.id_conta_usuario = cou.id_conta_usuario AND con.id_convidado = uco.id_conta_usuario AND con.estado = 1 AND con.id_projeto = :id_projeto ORDER BY con.ts_realizacao DESC;";
+		$stmt = $conn->prepare($sql);		
+		$stmt->bindParam(':id_projeto', $rs['id_projeto']);
+		$stmt->execute();
+		$cs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }	
-	return $app['twig']->render('page_projeto_d_membros.html',array("p"=>$rs,"m"=>$rsm));
+	return $app['twig']->render('page_projeto_d_membros.html',array("p"=>$rs,"m"=>$rst,"u"=>$rsu,"cs"=>$cs,"email"=>$email));
+})
+->before($protector);
+
+$projeto->match('/{dominio}/membros/convidar/{id}', function($dominio, $id) use($app) {
+	$p = rproj($dominio);
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+	try {
+		$conn = nconn();
+		$sql = "INSERT INTO tz_convite (id_conta_usuario, id_convidado, id_projeto, ts_realizacao, estado) VALUES (:id_conta_usuario, :id_convidado, :id_projeto, CURRENT_TIMESTAMP, 1);";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);	
+		$stmt->bindParam(':id_convidado', $id);	
+		$stmt->bindParam(':id_projeto', $p['id_projeto']);
+		$e = $stmt->execute();
+		return $app->redirect("/projeto/$dominio/membros");
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $e;
 })
 ->before($protector);
 
