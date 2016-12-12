@@ -193,12 +193,39 @@ $conta->match('/senha', function () use ($app) {
 })
 ->before($protector);
 
-$conta->post('/senha', function () use ($app) {
-	$usuario = $app['session']->get('conta_usuario');
-	$id_conta_usuario = $usuario['id_conta_usuario'];		
-	return	$app->redirect("/conta/senha");
+$conta->match('/recuperar/senha', function () use ($app) {	
+	$msg = "";
+	$t = "";
+	if(isset($_POST['email'])){
+		try {
+			$conn = nconn();
+			$sql = "SELECT id_conta_usuario FROM tz_conta_usuario WHERE estado = 1 AND email = :email;";
+			$stmt = $conn->prepare($sql);
+			$stmt->bindParam(':email', $_POST['email']);
+			$stmt->execute();
+			$rs = $stmt->fetch(PDO::FETCH_ASSOC);			
+			if($stmt->rowCount()==1){
+				$p1 = hash('sha512',md5(uniqid(rand(), true)));
+				$p2 = hash('sha512',$p1);
+				$p3 = md5(uniqid(rand(), true));
+				$cha_recuperacao = $p1."_".$p2."_".$p3;
+				$id = $rs['id_conta_usuario'];
+				$sql = "INSERT INTO tz_cha_recuperacao (cha_recuperacao, estado, ts_envio, id_conta_usuario) VALUES ('".$cha_recuperacao."', 0, CURRENT_TIMESTAMP, ".$id.");";
+				$stmt = $conn->prepare($sql);
+				$stmt->execute();
+				$msg = "Siga as instruções enviadas para o e-mail \"".$_POST['email']."\"";
+				$t = "success";
+			}else{
+				$msg = "Não foi possível concluir o processo";
+				$t = "danger";
+			}	
+			}catch(PDOException $ex){
+				echo "Erro: " . $ex->getMessage();
+	    }	
+	}		
+	return $app['twig']->render('form_recuperar_senha.html',array('msg'=>$msg,'t'=>$t));
 })
-->before($protector);
+->before($nosesius);
 
 return $conta;
 ?>

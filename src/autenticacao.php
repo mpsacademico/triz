@@ -4,6 +4,11 @@ $protector = function () use ($app) {
         return $app->redirect('/entrar');
     }	
 };
+$nosesius = function () use ($app) {
+	if (!(null === $user = $app['session']->get('conta_usuario'))) {
+        return $app->redirect('/');
+    }	
+};
 $auzeitor = function ($request, $response) use ($app) {
 	$dom = $request->get("dominio");
 	$usuario = $app['session']->get('conta_usuario');

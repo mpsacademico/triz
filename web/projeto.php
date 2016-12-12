@@ -73,81 +73,30 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 ->before($protector)
 ->before($auzeitor);
 
-require("projeto_membros.php");
-
-$projeto->match('/{dominio}/relatorios', function($dominio) use($app) {	
-	$rs = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_relatorios.html',array("p"=>$rs));
+$projeto->match('/{dominio}/backlog', function($dominio) use($app) {	
+	$p = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_backlog.html',array("p"=>$p));
 })
 ->before($protector)
 ->before($auzeitor);
 
-$projeto->match('/{dominio}/relatorios/{tipo}', function($dominio, $tipo) use($app) {	
-	require_once __DIR__ . '/../vendor/mpdf/mpdf/mpdf.php';
-	$rs = rproj($dominio);	
-	$mpdf = new Mpdf();
-	$mpdf->WriteHTML($app['twig']->render("page_inicio.html"));
-	$mpdf->Output();
-	exit;	
+$projeto->match('/{dominio}/releases', function($dominio) use($app) {	
+	$p = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_releases.html',array("p"=>$p));
 })
 ->before($protector)
 ->before($auzeitor);
 
-$projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {			
-	$rs = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao));
-})
-->value('secao', 'sobre')
-->before($protector)
-->before($auzeitor);
-
-$projeto->match('/{dominio}/configuracoes/visibilidade/editar/{estado}', function($dominio, $estado) use($app) {	
-	if($estado=="privado"){
-		$estado = 1;
-	}else{
-		$estado = 2;
-	}	
-	try {
-		$conn = nconn();		
-		$sql = "UPDATE tz_projeto SET visibilidade = :estado WHERE dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		$stmt->bindParam(':estado', $estado);
-		$stmt->bindParam(':dominio', $dominio);
-		$e = $stmt->execute();		
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-	return $app->redirect("/projeto/$dominio/configuracoes/visibilidade");
+$projeto->match('/{dominio}/sprints', function($dominio) use($app) {	
+	$p = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_sprints.html',array("p"=>$p));
 })
 ->before($protector)
 ->before($auzeitor);
 
-$projeto->match('/{dominio}/configuracoes/desativacao/concluir', function($dominio) use($app) {	
-	try {
-		$conn = nconn();		
-		$sql = "UPDATE tz_projeto SET situacao = 1 WHERE dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		$stmt->bindParam(':dominio', $dominio);
-		$e = $stmt->execute();		
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-	return $app->redirect("/projeto/$dominio/configuracoes");
-})
-->before($protector)
-->before($auzeitor);
-
-$projeto->match('/{dominio}/configuracoes/cancelamento/cancelar', function($dominio) use($app) {	
-	try {
-		$conn = nconn();		
-		$sql = "UPDATE tz_projeto SET situacao = 2 WHERE dominio = :dominio;";
-		$stmt = $conn->prepare($sql);		
-		$stmt->bindParam(':dominio', $dominio);
-		$e = $stmt->execute();		
-	}catch(PDOException $ex){
-		echo "Erro: " . $ex->getMessage();
-    }
-	return $app->redirect("/projeto/$dominio/configuracoes");
+$projeto->match('/{dominio}/quadro', function($dominio) use($app) {	
+	$p = rproj($dominio);
+	return $app['twig']->render('page_projeto_d_quadro.html',array("p"=>$p));
 })
 ->before($protector)
 ->before($auzeitor);
@@ -217,6 +166,10 @@ function rproj($dominio){
     }
 	return $rs;
 }
+
+require("projeto_membros.php");
+require("projeto_relatorios.php");
+require("projeto_configuracoes.php");
 
 return $projeto;
 ?>

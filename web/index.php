@@ -4,6 +4,9 @@
 ini_set('post_max_size', '8M');
 ini_set('upload_max_filesize', '8M');
 
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 date_default_timezone_set("America/Sao_Paulo");
 
 require_once __DIR__.'/../vendor/autoload.php';
