@@ -147,10 +147,49 @@ $conta->match('/ver', function () use ($app) {
 })
 ->before($protector);
 
-$conta->get('/senha', function () use ($app) {
+$conta->match('/senha', function () use ($app) {
 	$usuario = $app['session']->get('conta_usuario');
-	$id_conta_usuario = $usuario['id_conta_usuario'];		
-	return $app['twig']->render('form_senha.html');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+	$msg = array();
+	$tipo = "danger";
+	if(isset($_POST['btn'])){
+		$atual = $_POST['atual'];
+		$nova = $_POST['nova'];
+		$confirma = $_POST['confirma'];
+		try {
+			$conn = nconn();
+			$stmt = $conn->prepare("SELECT salt_senha FROM tz_conta_usuario WHERE email = :email;");
+			$stmt->bindParam(':email', $usuario['email']);
+			$stmt->execute();			
+			if($stmt->rowCount()==0){	
+				$msg[] = "O e-mail não foi reconhecido";				
+			}else{
+				$rs = $stmt->fetch(PDO::FETCH_ASSOC);				
+				$hash_senha = hash('sha512', $atual.$rs['salt_senha']);
+				$salt = $rs['salt_senha'];
+				$stmt = $conn->prepare("SELECT id_conta_usuario, nome, sobrenome, email, login, salt_conta, ts_criacao, estado FROM tz_conta_usuario WHERE email = :email AND senha = :senha;");
+				$stmt->bindParam(':email', $usuario['email']);
+				$stmt->bindParam(':senha', $hash_senha);
+				$stmt->execute();			
+				if($stmt->rowCount()==1){	
+					if($nova==$confirma){
+						$sql = "UPDATE tz_conta_usuario SET senha = '".hash('sha512',$nova.$salt)."' WHERE id_conta_usuario = $id_conta_usuario;";
+						$stmt = $conn->prepare($sql);
+						$stmt->execute();
+						$msg[] = "A senha foi alterada com sucesso!";
+						$tipo = "success";
+					}else{
+						$msg[]= "Verifique se as senhas digitadas são iguais";						
+					}
+				}else{
+					$msg[] = "A senha atual está incorreta";
+				}				
+			}
+		}catch(PDOException $ex){
+			echo "Erro: " . $ex->getMessage();
+		}
+	}
+	return $app['twig']->render('form_senha.html',array("msg"=>$msg,"tipo"=>$tipo));
 })
 ->before($protector);
 

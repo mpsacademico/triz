@@ -67,7 +67,8 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 	if($rs==false){
 		$app->abort(404, 'O projeto "'.$dominio.'" não existe!');
 	}	
-	return $app['twig']->render('page_projeto_d.html',array("p"=>$rs));
+	var_dump($rs);
+	return $app['twig']->render('page_projeto_d_geral.html',array("p"=>$rs));
 })
 ->before($protector)
 ->before($auzeitor);

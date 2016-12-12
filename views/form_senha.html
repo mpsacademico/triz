@@ -6,21 +6,24 @@
 {% block main %}
 <div class="row">
 	<div class="col-lg-4">
+		{% if msg is not empty %}
+		<div class="alert alert-{%if tipo is defined%}{{tipo}}{%endif%}" role="alert">{{msg.0}}</div>
+		{% endif %}
 		<form action="/conta/senha" method="POST">
 			<div class="form-group">
 				<label for="atual">Senha atual</label>
-				<input type="password" id="atual" name="atual" class="form-control">
+				<input type="password" id="atual" name="atual" class="form-control" required>
 			</div>
 			<div class="form-group">
 				<label for="nova">Senha nova</label>
-				<input type="password" id="nova" name="nova" class="form-control">
+				<input type="password" id="nova" name="nova" class="form-control" required>
 			</div>
 			<div class="form-group">
 				<label for="confirma">Repetir senha nova</label>
-				<input type="password" id="confirma" name="confirm" class="form-control">
+				<input type="password" id="confirma" name="confirma" class="form-control" required> 
 			</div>
 			<div class="form-group text-right">
-				<input type="submit" value="Alterar senha" class="btn btn-danger rose">
+				<input type="submit" id="btn" name="btn" value="Alterar senha" class="btn btn-primary">
 			</div>
 		</form>
 	</div>
