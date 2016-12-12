@@ -1,0 +1,50 @@
+{% extends "inc/base_perfil.html" %}
+
+{% block title %}{{p.titulo}}{% endblock %}
+
+{% block main %}
+<div class="container">		
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+		<header>						
+			<div class="page-header">
+				<h1>{{p.titulo}}</h1>
+			</div>
+		</header>	
+		<div>
+			<p class="lead">{{p.resumo}}</p>
+			<p>
+				{{p.descricao}}	
+			</p>
+		</div>		
+		<div>
+		<br>
+		<h4>Integrantes</h4>
+		<div class="list-group">
+		{% for u in is %}
+			<a href="/perfil/{{u.id_conta_usuario}}" target="_blank" class="black list-group-item" style="border:none;">
+			<div class="media">
+			  <div class="media-left media-middle">
+				<span class="media-object img-circle" style="background-color: #feeab9; background-image: url({{ducs}}/usuario/perfil/{{u.imagem}}.{{u.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 64px;height:64px;width:64px;">				
+			  </div>
+			  <div class="media-body">
+				<h4 class="media-heading">{{u.nome}} {{u.sobrenome}}</h4>
+				<p>{{u.ocupacao}} <em class="text-muted">{{u.funcao}}</em></p>				
+			  </div>
+			</div>
+			{% endfor %}	  
+		  </a>  
+		</div>
+			
+		</div>
+		<div>
+			<p>
+			{% for t in ts %}
+				<span class="btn btn-xs btn-danger rose">{{t.tag}}</span>
+			{% endfor %}
+			</p>
+		</div>
+	</div>	
+	</div>
+</div>
+{% endblock %}

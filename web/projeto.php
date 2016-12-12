@@ -66,12 +66,55 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 	$rs = rproj($dominio);
 	if($rs==false){
 		$app->abort(404, 'O projeto "'.$dominio.'" não existe!');
-	}	
-	var_dump($rs);
+	}
+	$dom = $dominio;
+	$usuario = $app['session']->get('conta_usuario');
+	$id = $usuario['id_conta_usuario'];	
+	try {
+		$conn = nconn();
+		$sql = "SELECT * FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND p.dominio = '$dom' AND c.id_convidado = $id AND c.estado = 2;";		
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$r = $stmt->fetch(PDO::FETCH_ASSOC);
+		if($r == false){
+			if($rs['visibilidade']==2){
+				return rpgeral($dominio, $app);
+			}elseif($rs['visibilidade']==1){
+				$app->abort(401, 'Acesso não autorizado!');
+			}
+		}	
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
 	return $app['twig']->render('page_projeto_d_geral.html',array("p"=>$rs));
+})
+->before($protector);
+
+$projeto->match('/{dominio}/visualizar', function($dominio) use($app) {
+	return rpgeral($dominio, $app);
 })
 ->before($protector)
 ->before($auzeitor);
+
+function rpgeral($dominio, $app){
+	$rs = rproj($dominio);	
+	$ts = array();
+	$is = array();
+	try {
+		$conn = nconn();		
+		$sql = "SELECT * FROM tz_tag_projeto WHERE id_projeto = ".$rs['id_projeto'].";";
+		$stmt = $conn->prepare($sql);		
+		$stmt->execute();
+		$ts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$sql = "SELECT t.id_integrante, t.id_time, t.funcao, t.estado, t.papel, c.id_convite, c.ts_realizacao, c.ts_resposta, cu.id_conta_usuario, cu.nome, cu.sobrenome, cu.email, p.* FROM tz_integrante AS t, tz_convite AS c, tz_conta_usuario AS cu, tz_perfil AS p WHERE t.id_convite = c.id_convite AND c.id_convidado = cu.id_conta_usuario AND c.id_convidado = p.id_conta_usuario AND c.id_projeto = ".$rs["id_projeto"]." ORDER BY cu.nome ASC;";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$is = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $app['twig']->render('page_projeto_d_visualizar.html',array("p"=>$rs,"ts"=>$ts,"is"=>$is));
+}
 
 $projeto->match('/{dominio}/backlog', function($dominio) use($app) {	
 	$p = rproj($dominio);

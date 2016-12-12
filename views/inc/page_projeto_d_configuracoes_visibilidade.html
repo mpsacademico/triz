@@ -1,5 +1,6 @@
 <h4>Visibilidade</h4>
 <p>Decida o nível de privacidade do {{ p.dominio }}</p>
+<p><a href="/projeto/{{p.dominio}}/visualizar" target="_blank" class="btn btn-default btn-xs">Visualizar como público</a></p>
 <div class="list-group">
   <a href="/projeto/{{p.dominio}}/configuracoes/visibilidade/editar/privado" class="list-group-item {%if p.pr is defined %}list-group-item-success  active{% endif %}">
 	<p><img src="{{ static }}/img/privado_64.png" height="64px" width="64px"></p>
