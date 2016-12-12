@@ -1,5 +1,58 @@
 <?php
 
+$projeto->get('/{dominio}/configuracoes/identidade', function($dominio) use($app) {	
+	$rs = rproj($dominio);
+	$ts = array();
+	try {
+		$conn = nconn();		
+		$sql = "SELECT * FROM tz_tag_projeto WHERE id_projeto = ".$rs['id_projeto']." ORDER BY id_tag_projeto DESC;";
+		$stmt = $conn->prepare($sql);	
+		$e = $stmt->execute();		
+		$ts = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>"identidade","ts"=>$ts));
+})
+->before($protector)
+->before($auzeitor);
+
+$projeto->post('/{dominio}/configuracoes/identidade', function($dominio) use($app) {	
+	$rs = rproj($dominio);	
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];
+	try {
+		$conn = nconn();		
+		$sql = "INSERT INTO tz_tag_projeto (tag, id_projeto, id_conta_usuario) VALUES (:tag, ".$rs['id_projeto'].", ".$id_conta_usuario.");";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':tag', $_POST['tag']);
+		$e = $stmt->execute();		
+		$ts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $app->redirect("/projeto/$dominio/configuracoes/identidade");
+})
+->before($protector)
+->before($auzeitor);
+
+$projeto->match('/{dominio}/configuracoes/identidade/tag/remover/{id}', function($dominio, $id) use($app) {	
+	$rs = rproj($dominio);		
+	try {
+		$conn = nconn();		
+		$sql = "DELETE FROM tz_tag_projeto WHERE id_tag_projeto = :id;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':id', $id);
+		$e = $stmt->execute();		
+		$ts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+	return $app->redirect("/projeto/$dominio/configuracoes/identidade");
+})
+->before($protector)
+->before($auzeitor);
+
 $projeto->match('/{dominio}/configuracoes/{secao}', function($dominio, $secao) use($app) {			
 	$rs = rproj($dominio);
 	return $app['twig']->render('page_projeto_d_configuracoes.html',array("p"=>$rs,"secao"=>$secao));

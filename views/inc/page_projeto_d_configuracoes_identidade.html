@@ -1,0 +1,17 @@
+<h4>Identidade</h4>
+<p>Categorização do projeto com tags</p>
+<div class="row">
+	<div class="col-lg-6">
+		<form method="POST" action="" class="form-inline">
+			<div class="form-group">
+				<input type="text" name="tag" placeholder="Insira a nova tag aqui" required class="form-control">
+			</div>
+			<input type="submit" name="btn" value="Inserir tag" class="btn btn-primary form-control">
+		</form>
+		<ul class="list-group">
+			{% for t in ts %}
+		  <li class="list-group-item"><a class="btn btn-danger btn-xs" href="/projeto/{{p.dominio}}/configuracoes/identidade/tag/remover/{{t.id_tag_projeto}}">X</a> {{t.tag}}</li> 
+			{% endfor %}
+		</ul>
+	</div>
+</div>
