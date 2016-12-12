@@ -3,16 +3,18 @@ $projeto->match('/{dominio}/membros', function($dominio) use($app) {
 	$rs = rproj($dominio);
 	$rsu = 'null';
 	$ts = array();
+	$po = array();
+	$sm = array();
 	$email = '';
 	if(isset($_GET['email'])){
 		try {
 			$conn = nconn();		
-			$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.estado = 1 AND c.email = :email;";
+			$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.email = :email AND c.id_conta_usuario NOT IN (SELECT cu.id_conta_usuario FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p, tz_conta_usuario AS cu WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND c.id_convidado = cu.id_conta_usuario AND i.estado = 1 AND c.estado = 2 OR c.estado = 1 AND p.dominio = '".$rs['dominio']."')";
 			$stmt = $conn->prepare($sql);		
 			$stmt->bindParam(':email', $_GET['email']);
 			$stmt->execute();
 			$rsu = $stmt->fetch(PDO::FETCH_ASSOC);
-			$email = $_GET['email'];
+			$email = $_GET['email'];			
 		}catch(PDOException $ex){
 			echo "Erro: " . $ex->getMessage();
 		}		
@@ -36,10 +38,20 @@ $projeto->match('/{dominio}/membros', function($dominio) use($app) {
 		$stmt = $conn->prepare($sql);
 		$stmt->execute();
 		$ts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		//product owner
+		$sql = "SELECT t.id_integrante, t.id_time, t.funcao, t.estado, t.papel, c.id_convite, c.ts_realizacao, c.ts_resposta, cu.id_conta_usuario, cu.nome, cu.sobrenome, cu.email, p.* FROM tz_integrante AS t, tz_convite AS c, tz_conta_usuario AS cu, tz_perfil AS p WHERE t.id_convite = c.id_convite AND c.id_convidado = cu.id_conta_usuario AND c.id_convidado = p.id_conta_usuario AND t.papel = 1 AND c.id_projeto = ".$rs["id_projeto"].";";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$po = $stmt->fetch(PDO::FETCH_ASSOC);		
+		//scrum master
+		$sql = "SELECT t.id_integrante, t.id_time, t.funcao, t.estado, t.papel, c.id_convite, c.ts_realizacao, c.ts_resposta, cu.id_conta_usuario, cu.nome, cu.sobrenome, cu.email, p.* FROM tz_integrante AS t, tz_convite AS c, tz_conta_usuario AS cu, tz_perfil AS p WHERE t.id_convite = c.id_convite AND c.id_convidado = cu.id_conta_usuario AND c.id_convidado = p.id_conta_usuario AND t.papel = 2 AND c.id_projeto = ".$rs["id_projeto"].";";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$sm = $stmt->fetch(PDO::FETCH_ASSOC);
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }	
-	return $app['twig']->render('page_projeto_d_membros.html',array("p"=>$rs,"m"=>$rst,"u"=>$rsu,"cs"=>$cs,"ts"=>$ts,"email"=>$email));
+	return $app['twig']->render('page_projeto_d_membros.html',array("p"=>$rs,"m"=>$rst,"u"=>$rsu,"cs"=>$cs,"ts"=>$ts,"email"=>$email,"po"=>$po,"sm"=>$sm));
 })
 ->before($protector)
 ->before($auzeitor);
@@ -171,4 +183,70 @@ $projeto->match('/{dominio}/membros/convite/{resposta}', function($dominio, $res
 })
 ->before($protector);
 
+$projeto->match('/{dominio}/membros/papeis/{tipo}/selecionar', function($dominio, $tipo) use($app) {
+	$p = rproj($dominio);	
+	$usuario = $app['session']->get('conta_usuario');
+	$id_conta_usuario = $usuario['id_conta_usuario'];	
+	if($tipo=="1"){
+		$secao = "Product Owner";
+	}else if($tipo =="2"){
+		$secao = "Scrum Master";
+	}
+	try {
+		$conn = nconn();		
+		$sql = "SELECT i.*, cu.nome, cu.sobrenome, cu.email, p.* FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p, tz_conta_usuario AS cu WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND c.id_convidado = cu.id_conta_usuario AND i.estado = 1 AND c.estado = 2 AND p.dominio = '".$p['dominio']."';";		
+		$stmt = $conn->prepare($sql);	
+		$stmt->execute();
+		$is = $stmt->fetchAll(PDO::FETCH_ASSOC);		
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $app['twig']->render("page_projeto_d_membros_papel.html",array("p"=>$p,"is"=>$is,"secao"=>$secao,"tipo"=>$tipo));
+})
+->before($protector)
+->before($auzeitor);
+
+$projeto->match('/{dominio}/membros/papeis/{tipo}/selecionar/{id}', function($dominio, $tipo, $id) use($app) {
+	$p = rproj($dominio);	
+	try {
+		remover_papel($app,$p['id_projeto'],$tipo);
+		$conn = nconn();	
+		$sql = "UPDATE tz_integrante SET papel = :tipo WHERE id_integrante = :id;";
+		$stmt = $conn->prepare($sql);
+		$stmt->bindParam(':tipo', $tipo);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $app->redirect("/projeto/$dominio/membros/papeis/$tipo/selecionar");
+})
+->before($protector)
+->before($auzeitor);
+
+$projeto->match('/{dominio}/membros/papeis/{tipo}/remover', function($dominio, $tipo) use($app) {
+	$p = rproj($dominio);	
+	remover_papel($app,$p['id_projeto'],$tipo);	
+	return $app->redirect("/projeto/$dominio/membros/papeis/$tipo/selecionar");
+})
+->before($protector)
+->before($auzeitor);
+
+function remover_papel($app,$id_proj,$tipo){
+	try {
+		$conn = nconn();		
+		$sql = "SELECT id_time FROM tz_time WHERE id_projeto = :id;";			
+		$stmt = $conn->prepare($sql);	
+		$stmt->bindParam(':id', $id_proj);
+		$stmt->execute();
+		$id_time = $stmt->fetch(PDO::FETCH_ASSOC);		
+		$sql = "UPDATE tz_integrante SET papel = 3 WHERE papel = :tipo AND id_time = :id_time;";
+		$stmt = $conn->prepare($sql);	
+		$stmt->bindParam(':tipo', $tipo);
+		$stmt->bindParam(':id_time', $id_time['id_time']);
+		$stmt->execute();
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }
+}
 ?>

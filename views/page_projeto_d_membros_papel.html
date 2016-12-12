@@ -1,0 +1,36 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Membros{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4><strong>Membros</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ol class="breadcrumb">
+		  <li><a href="/projeto/{{p.dominio}}/membros">Membros</a></li>
+		  <li><a href="/projeto/{{p.dominio}}/membros/papeis/{{tipo}}/selecionar">Papel</a></li>		  
+		  <li class="active">{{secao}}</li>
+		</ol>
+		<p><a href="/projeto/{{p.dominio}}/membros/papeis/{{tipo}}/remover" class="btn btn-danger btn-sm">Remover o papel {{secao}}</a></p>
+		<div class="list-group">	
+		{% for i in is %}
+		  <a href="/projeto/{{p.dominio}}/membros/papeis/{{tipo}}/selecionar/{{i.id_integrante}}" class="list-group-item {% if i.papel == tipo %} active{% endif %}">{{i.nome}} {{i.sobrenome}} <em>{{i.funcao}}</em></a>		  
+		  {% endfor %}
+		  
+		</div>
+		<ul>		
+		</ul>		
+	</div>	
+</div>
+	
+
+{% endblock %}

@@ -26,10 +26,15 @@
 						<div class="panel-body">
 							<strong>Product Owner</strong>							
 						</div>
-						<div class="list-group">
-						  <a href="#" class="list-group-item">
-							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
-							<h4 class="list-group-item-heading">Selecionar</h4>							
+						<div class="list-group">						
+						  <a href="/projeto/{{p.dominio}}/membros/papeis/1/selecionar" class="list-group-item">
+							{% if po is empty %}
+							<p><div class="img-circle" style="background-color:#feeab9; background-image:url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">Selecionar</h4>	
+							{% else %}
+							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/{{po.imagem}}.{{po.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">{{po.nome}}</h4>	
+							{% endif %}												
 						  </a>
 						</div>	
 					</div>
@@ -40,9 +45,14 @@
 							<strong>Scrum Master</strong>							
 						</div>
 						<div class="list-group">
-						  <a href="#" class="list-group-item">
-							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
-							<h4 class="list-group-item-heading">Selecionar</h4>							
+						  <a href="/projeto/{{p.dominio}}/membros/papeis/2/selecionar" class="list-group-item">
+							{% if sm is empty %}
+							<p><div class="img-circle" style="background-color:#feeab9; background-image:url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">Selecionar</h4>	
+							{% else %}
+							<p><div class="img-circle" style="background-color:#feeab9; background-image: url({{ducs}}/usuario/perfil/{{sm.imagem}}.{{sm.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 128px;height:128px;width:128px;display:inline-block"></div></p>
+							<h4 class="list-group-item-heading">{{sm.nome}}</h4>	
+							{% endif %}									
 						  </a>
 						</div>	
 					</div>

@@ -6,13 +6,30 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-4">
-		
+			<strong>Notificações</strong>
 		</div>
 		<div class="col-lg-4">
-		
+			<strong>Projetos que você participa</strong>
+			<div class="list-group">
+				{% for pt in pts %}
+			  <a href="/projeto/{{pt.dominio}}" class="list-group-item">
+				<h4 class="list-group-item-heading">{{pt.titulo}}</h4>				
+				<p class="list-group-item-text">{{pt.resumo}}</p>				
+			  </a>
+				{% endfor %}
+			</div>
+			<strong>Seus projetos em andamento</strong>
+			<div class="list-group">
+				{% for p in ps %}
+			  <a href="/projeto/{{p.dominio}}" class="list-group-item">
+				<h4 class="list-group-item-heading">{{p.titulo}}</h4>				
+				<p class="list-group-item-text">{{p.resumo}}</p>				
+			  </a>
+				{% endfor %}
+			</div>
 		</div>
 		<div class="col-lg-4">
-			
+			<strong>Convites</strong>
 			<div class="list-group">
 				{% for c in cs %}
 			  <div class="list-group-item">

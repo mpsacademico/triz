@@ -35,6 +35,8 @@ $app->mount('/perfil', require 'perfil.php');
 $app->mount('/projeto', require 'projeto.php');
 
 $app->match('/', function () use ($app) { 
+	$pts = array();
+	$ps = array();
 	if (null === $user = $app['session']->get('conta_usuario')){
 		return $app['twig']->render('page_inicio.html');
 	}else{	
@@ -46,11 +48,19 @@ $app->match('/', function () use ($app) {
 			$stmt = $conn->prepare($sql);
 			$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);			
 			$e = $stmt->execute();	
-			$cs = $stmt->fetchAll(PDO::FETCH_ASSOC);			
+			$cs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$sql = "SELECT * FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND c.id_convidado = $id_conta_usuario AND p.id_conta_usuario != $id_conta_usuario AND c.estado = 2;";
+			$stmt = $conn->prepare($sql);			
+			$stmt->execute();				
+			$pts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$sql = "SELECT * FROM tz_projeto WHERE estado = 0 AND id_conta_usuario = $id_conta_usuario;";
+			$stmt = $conn->prepare($sql);			
+			$stmt->execute();				
+			$ps = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}catch(PDOException $ex){
 			echo "Erro: " . $ex->getMessage();
 		}		
-		return $app['twig']->render('page_mural.html',array("cs"=>$cs));
+		return $app['twig']->render('page_mural.html',array("cs"=>$cs,"pts"=>$pts,"ps"=>$ps));
 	}
 });
 
@@ -161,7 +171,7 @@ $app->match('/sair', function () use ($app) {
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {	
 	if($app['debug']==true){
-		//return;
+		return;
 	}
     switch ($code) {
         case 404:
