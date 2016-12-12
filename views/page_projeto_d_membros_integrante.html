@@ -24,6 +24,10 @@
 			<table class="table">
 			  <tbody>	
 				<tr>
+				  <th>Integrante</th>
+				  <td><a href="/perfil/{{i.id_conta_usuario}}" target="blank" title="Visite o perfil pessoal">{{i.nome}} {{i.sobrenome}}</a></td>	  
+				</tr>
+				<tr>
 				  <th>Função</th>
 				  <td>
 					<form method="POST" action="" class="form-inline" style="margin:0">
@@ -41,11 +45,7 @@
 				<tr>
 				  <th>Papel</th>
 				  <td>{{i.papel}}</td>	  
-				</tr>
-				<tr>
-				  <th>Ações</th>
-				  <td><a href="/perfil/{{i.id_conta_usuario}}">Visitar perfil</a><a href="">Tornar Product Owener</a> <a href="">Tornar Scrum Master</a></td>	  
-				</tr>
+				</tr>				
 			  </tbody>
 			</table>
 		</div>

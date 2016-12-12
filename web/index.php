@@ -161,11 +161,15 @@ $app->match('/sair', function () use ($app) {
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {	
 	if($app['debug']==true){
-		return;
+		//return;
 	}
     switch ($code) {
         case 404:
             $msg = 'Página não encontrada!';			
+            break;
+		case 401:
+			$msg = 'Página não encontrada!';
+            //$msg = 'Acesso não autorizado!';			
             break;
         default:
             $msg = 'Oops! Um erro terrível aconteceu! :(';

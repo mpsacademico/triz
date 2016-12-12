@@ -56,7 +56,7 @@
 						</div>
 						<div class="list-group">
 						  {% for t in ts %}
-						  <a href="/projeto/{{p.dominio}}/membros/integrante/{{t.id_integrante}}" class="list-group-item">
+						  <a href="/projeto/{{p.dominio}}/membros/integrante/{{t.id_integrante}}" class="list-group-item {% if t.id_conta_usuario == ss.id_conta_usuario %}list-group-item-info{% endif %}">
 							<h4 class="list-group-item-heading">{{t.nome}}</h4>
 							<p class="list-group-item-text">{{t.funcao}}</p>
 						  </a>
