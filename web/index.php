@@ -40,6 +40,7 @@ $app->mount('/projeto', require 'projeto.php');
 $app->match('/', function () use ($app) { 
 	$pts = array();
 	$ps = array();
+	$res = array();
 	if (null === $user = $app['session']->get('conta_usuario')){
 		return $app['twig']->render('page_inicio.html');
 	}else{	
@@ -47,6 +48,10 @@ $app->match('/', function () use ($app) {
 			$usuario = $app['session']->get('conta_usuario');
 			$id_conta_usuario = $usuario['id_conta_usuario'];
 			$conn = nconn();
+			$sql = "SELECT * FROM tz_release AS re, tz_projeto AS pr WHERE re.id_projeto = pr.id_projeto AND re.dt_entrega = CURDATE() AND re.id_projeto IN (SELECT p.id_projeto FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND c.id_convidado = $id_conta_usuario AND c.estado = 2);";
+			$stmt = $conn->prepare($sql);
+			$e = $stmt->execute();	
+			$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$sql = "SELECT co.*, cu.nome, cu.sobrenome, pr.titulo, pr.resumo, pr.dominio FROM tz_convite AS co, tz_conta_usuario AS cu, tz_projeto AS pr WHERE co.id_conta_usuario = cu.id_conta_usuario AND co.id_projeto = pr.id_projeto AND co.estado = 1 AND pr.estado = 0 AND co.id_convidado = :id_conta_usuario ORDER BY co.ts_realizacao DESC;";
 			$stmt = $conn->prepare($sql);
 			$stmt->bindParam(':id_conta_usuario', $id_conta_usuario);			
@@ -63,7 +68,7 @@ $app->match('/', function () use ($app) {
 		}catch(PDOException $ex){
 			echo "Erro: " . $ex->getMessage();
 		}		
-		return $app['twig']->render('page_mural.html',array("cs"=>$cs,"pts"=>$pts,"ps"=>$ps));
+		return $app['twig']->render('page_mural.html',array("cs"=>$cs,"pts"=>$pts,"ps"=>$ps,"res"=>$res));
 	}
 });
 

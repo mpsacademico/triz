@@ -1,0 +1,31 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Releases{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4 style="display:inline;margin-right:20px"><strong>Releases</strong></h4>
+			<a href="/projeto/{{p.dominio}}/releases/criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar nova release</a>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<div class="list-group">	
+			{% for re in r %}
+		  <a id="{{re.dt_entrega|date('d-m-Y')}}" href="" class="list-group-item">	
+			<h4 class="list-group-item-heading"><span class="btn bg-danger"><strong>{{re.dt_entrega|date("d/m/Y")}}</strong></span></p>
+			<h4 class="list-group-item-heading">{{re.titulo}}</h4>
+			<p class="list-group-item-text">{{re.descricao}}</p>
+		  </a>		   
+			{% endfor %}
+		</div>
+	</div>	
+</div>
+{% endblock %}

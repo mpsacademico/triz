@@ -8,8 +8,10 @@ $projeto->match('/{dominio}/membros', function($dominio) use($app) {
 	$email = '';
 	if(isset($_GET['email'])){
 		try {
-			$conn = nconn();		
-			$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.email = :email AND c.id_conta_usuario NOT IN (SELECT cu.id_conta_usuario FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p, tz_conta_usuario AS cu WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND c.id_convidado = cu.id_conta_usuario AND i.estado = 1 AND c.estado = 2 OR c.estado = 1 AND p.dominio = '".$rs['dominio']."')";
+			$conn = nconn();	
+			//função para retorno de apenas usuários válidos para convite
+			/*$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.email = :email AND c.id_conta_usuario NOT IN (SELECT cu.id_conta_usuario FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p, tz_conta_usuario AS cu WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND c.id_convidado = cu.id_conta_usuario AND i.estado = 1 AND c.estado = 2 OR c.estado = 1 AND p.dominio = '".$rs['dominio']."')";*/
+			$sql = "SELECT c.nome, c.sobrenome, c.email, p.* FROM tz_conta_usuario AS c, tz_perfil AS p WHERE c.id_conta_usuario = p.id_conta_usuario AND c.email = :email;";
 			$stmt = $conn->prepare($sql);		
 			$stmt->bindParam(':email', $_GET['email']);
 			$stmt->execute();

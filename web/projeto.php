@@ -116,20 +116,6 @@ function rpgeral($dominio, $app){
 	return $app['twig']->render('page_projeto_d_visualizar.html',array("p"=>$rs,"ts"=>$ts,"is"=>$is));
 }
 
-$projeto->match('/{dominio}/backlog', function($dominio) use($app) {	
-	$p = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_backlog.html',array("p"=>$p));
-})
-->before($protector)
-->before($auzeitor);
-
-$projeto->match('/{dominio}/releases', function($dominio) use($app) {	
-	$p = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_releases.html',array("p"=>$p));
-})
-->before($protector)
-->before($auzeitor);
-
 $projeto->match('/{dominio}/sprints', function($dominio) use($app) {	
 	$p = rproj($dominio);
 	return $app['twig']->render('page_projeto_d_sprints.html',array("p"=>$p));
@@ -211,6 +197,8 @@ function rproj($dominio){
 }
 
 require("projeto_membros.php");
+require("projeto_backlog.php");
+require("projeto_releases.php");
 require("projeto_relatorios.php");
 require("projeto_configuracoes.php");
 

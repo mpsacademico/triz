@@ -1,0 +1,39 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Backlog{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4 style="display:inline;margin-right:20px"><strong>Backlog</strong></h4>
+			<a href="/projeto/{{p.dominio}}/backlog/historia/criar" class="btn black"><img src="{{ static }}/img/adicionar_64.png" height="20" width="20"> Criar nova história</a>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ul class="nav nav-pills">
+		  <li role="presentation"></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-info active">Em andamento</a></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-success active">Concluídas</a></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-danger active">Canceladas</a></li>	  
+		</ul>
+
+		<div class="panel panel-default" style="margin-top:20px">
+		  <div class="panel-body">	
+			<p><strong>História 1</strong> <small class="text-muted">Por <a href="/perfil/" target="_blank"> Marcos Paulo</a> em 15/45/54512</small> <a href="/projeto/p.dominio/backlog" class="btn btn-default btn-xs">Adicionar tarefa</a><p>
+			<p class="lead">jkhsjkfhsdjkfhsjkfh sjkdhfkjsdf hjskdhf sjkdfhjsdkfhskdjfhsdkj fhsdjkfhsdkf jsdhfjksdhf kjsdfh</p>	
+			<p><a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | Complexidade: <span class="badge">XX</span> | Estimativa : <span class="badge">4</span></p>
+		  </div>
+		</div>
+	</div>	
+	
+	
+
+</div>
+{% endblock %}

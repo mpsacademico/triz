@@ -1,0 +1,38 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Releases{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">	
+	<div class="col-lg-6">
+		<h3>Criar novo projeto</h3>
+		<form method="POST" action="criar">
+
+			<div class="form-group">			
+				<label for="titulo">Título *</label>				
+				<input type="text" name="titulo" id="titulo" value="" required class="form-control">
+			</div>
+			
+			<div class="form-group">
+				<label for="descricao">Descrição</label>				
+				<textarea name="descricao" rows="4" class="form-control"></textarea>
+			</div>
+			
+			
+				<div class="form-group">
+					<label for="dt_entrega">Data de Entrega *</label>
+					<input type="date" name="dt_entrega" required class="form-control">
+				</div>				
+			
+		
+			<div class="form-group text-right">
+				<input type="submit" id="criar" value="Criar release" class="btn rose" class="form-control">
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
