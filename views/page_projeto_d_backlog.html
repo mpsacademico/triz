@@ -17,20 +17,21 @@
 </div>
 <div class="row">	
 	<div class="col-lg-12">	
-		<ul class="nav nav-pills">
+		<!--<ul class="nav nav-pills">
 		  <li role="presentation"></li>
 		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-info active">Em andamento</a></li>
 		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-success active">Concluídas</a></li>
 		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-danger active">Canceladas</a></li>	  
-		</ul>
-
-		<div class="panel panel-default" style="margin-top:20px">
+		</ul>-->
+		{%for h in hs%}
+		<div class="panel panel-default" style="margin-top:10px">
 		  <div class="panel-body">	
-			<p><strong>História 1</strong> <small class="text-muted">Por <a href="/perfil/" target="_blank"> Marcos Paulo</a> em 15/45/54512</small> <a href="/projeto/p.dominio/backlog" class="btn btn-default btn-xs">Adicionar tarefa</a><p>
-			<p class="lead">jkhsjkfhsdjkfhsjkfh sjkdhfkjsdf hjskdhf sjkdfhjsdkfhskdjfhsdkj fhsdjkfhsdkf jsdhfjksdhf kjsdfh</p>	
-			<p><a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | Complexidade: <span class="badge">XX</span> | Estimativa : <span class="badge">4</span></p>
+			<p><strong>História </strong> <small class="text-muted">Por <a href="/perfil/{{h.id_conta_usuario}}" target="_blank"> {{h.nome}}</a> em {{h.ts_criacao|date("d/m/Y \\à\\s H:i")}}</small> <!--<a href="/projeto/{{p.dominio}}/backlog/historia/{{h.id_historia}}" class="btn btn-default btn-xs">Editar história</a>--><p>
+			<p class="lead">{{h.descricao}}</p>	
+			<p><!--<a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | -->Complexidade: <span class="badge">{{h.complexidade}}</span> | Estimativa : <span class="badge">{{h.estimativa}}</span></p>
 		  </div>
 		</div>
+		{%endfor%}
 	</div>	
 	
 	

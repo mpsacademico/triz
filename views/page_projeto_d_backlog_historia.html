@@ -1,0 +1,67 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Backlog{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4 style="display:inline;margin-right:20px"><strong>Backlog</strong></h4>			
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ol class="breadcrumb">
+		  <li><a href="">Backlog</a></li>		  
+		  <li class="active">Editar história</li>
+		</ol>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-6">	
+		<!--<ul class="nav nav-pills">
+		  <li role="presentation"></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-info active">Em andamento</a></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-success active">Concluídas</a></li>
+		  <li role="presentation"><a href="/projeto/p.dominio/backlog" class="btn btn-danger active">Canceladas</a></li>	  
+		</ul>-->
+		
+			
+			<p><strong>História </strong> <small class="text-muted">Por <a href="/perfil/{{h.id_conta_usuario}}" target="_blank"> {{h.nome}}</a> em {{h.ts_criacao|date("d/m/Y \\à\\s H:i")}}</small> <p>
+			<p class="lead">{{h.descricao}}</p>	
+			<p><!--<a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | -->Complexidade: <span class="badge">{{h.complexidade}}</span> | Estimativa : <span class="badge">{{h.estimativa}}</span></p>
+		  
+		 <p>
+		  {%for u in is%}
+		  <a href="/perfil/{{u.id_conta_usuario}}" target="_blank"><div class="img-circle" style="background-color: #feeab9; background-image: url({{ducs}}/usuario/perfil/{{u.imagem}}.{{u.ext_imagem}}), url({{static}}/img/usuario_128.png);background-position:center;background-repeat:no-repeat;background-size:auto 64px;height:64px;width:64px;display:inline-block"></div></a>{%endfor%}<p>
+		  <p>
+		  {%if h.estado==0%}<a href="/projeto/{{p.dominio}}/backlog/historia/{{id}}/concluir" class="btn btn-lg btn-success">Concluir história</a>{%else%}<span class="btn btn-lg btn-success active disabled">História Concluída</span>{%endif%}</p>
+			
+		
+	</div>
+	<div class="col-lg-6">
+		{%if h.estado==0%}
+		<h4>Atribuir membros a história</h4>
+			<div class="list-group">
+			  {% for t in ts %}
+			  <a href="/projeto/{{p.dominio}}/backlog/historia/{{id}}/{{t.id_conta_usuario}}" class="list-group-item {% if t.id_conta_usuario == ss.id_conta_usuario %}list-group-item-info{% endif %}">
+				<h4 class="list-group-item-heading">{{t.nome}} {{t.sobrenome}}</h4>
+				<p class="list-group-item-text">{{t.funcao}}</p>
+			  </a>
+			  {% endfor %}
+			</div>	
+		{%endif%}
+	</div>	
+</div>
+<div class="row">	
+	
+	<div class="col-lg-6">
+	
+	</div>
+</div>
+{% endblock %}

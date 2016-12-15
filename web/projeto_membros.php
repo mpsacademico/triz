@@ -99,7 +99,7 @@ $projeto->match('/{dominio}/membros/time/{id}', function($dominio, $id) use($app
 		$stmt = $conn->prepare($sql);		
 		$stmt->bindParam(':id_time', $id);
 		$stmt->execute();
-		$rst = $stmt->fetch(PDO::FETCH_ASSOC);			
+		$rst = $stmt->fetch(PDO::FETCH_ASSOC);	
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }	

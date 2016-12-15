@@ -69,7 +69,7 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 	}
 	$dom = $dominio;
 	$usuario = $app['session']->get('conta_usuario');
-	$id = $usuario['id_conta_usuario'];	
+	$id = $usuario['id_conta_usuario'];		
 	try {
 		$conn = nconn();
 		$sql = "SELECT * FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND p.dominio = '$dom' AND c.id_convidado = $id AND c.estado = 2;";		
@@ -86,7 +86,36 @@ $projeto->match('/{dominio}', function($dominio) use($app) {
 	}catch(PDOException $ex){
 		echo "Erro: " . $ex->getMessage();
     }	
-	return $app['twig']->render('page_projeto_d_geral.html',array("p"=>$rs));
+	$m = 0;
+	$h = 0;
+	$s = 0;
+	$r = 0;
+	try {
+		$conn = nconn();
+		$sql = "SELECT COUNT('c.id_convidado') AS membros FROM tz_integrante AS t, tz_convite AS c, tz_conta_usuario AS cu, tz_perfil AS p WHERE t.id_convite = c.id_convite AND c.id_convidado = cu.id_conta_usuario AND c.id_convidado = p.id_conta_usuario AND c.id_projeto = ".$rs["id_projeto"]." ORDER BY cu.nome ASC;";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$mrs = $stmt->fetch(PDO::FETCH_ASSOC);
+		$m = $mrs['membros'];
+		$sql = "SELECT COUNT(id_release) AS releases FROM tz_release WHERE id_projeto = ".$rs['id_projeto'].";";
+		$stmt = $conn->prepare($sql);		
+		$stmt->execute();
+		$rrs = $stmt->fetch(PDO::FETCH_ASSOC);
+		$r = $rrs['releases'];
+		$sql = "SELECT COUNT(h.id_historia) AS historias FROM tz_historia AS h, tz_conta_usuario AS c WHERE h.id_conta_usuario = c.id_conta_usuario AND id_projeto = ".$rs['id_projeto'].";";
+		$stmt = $conn->prepare($sql);		
+		$stmt->execute();
+		$hrs = $stmt->fetch(PDO::FETCH_ASSOC);
+		$h = $hrs['historias'];
+		$sql = "SELECT COUNT(id_sprint) AS sprints FROM tz_sprint WHERE id_projeto = ".$rs['id_projeto'].";";
+		$stmt = $conn->prepare($sql);		
+		$e = $stmt->execute();		
+		$sa = $stmt->fetch(PDO::FETCH_ASSOC);
+		$s = $sa['sprints'];
+	}catch(PDOException $ex){
+		echo "Erro: " . $ex->getMessage();
+    }	
+	return $app['twig']->render('page_projeto_d_geral.html',array("p"=>$rs,"m"=>$m,"h"=>$h,"s"=>$s,"r"=>$r));
 })
 ->before($protector);
 
@@ -99,7 +128,7 @@ $projeto->match('/{dominio}/visualizar', function($dominio) use($app) {
 function rpgeral($dominio, $app){
 	$rs = rproj($dominio);	
 	$ts = array();
-	$is = array();
+	$is = array();	
 	try {
 		$conn = nconn();		
 		$sql = "SELECT * FROM tz_tag_projeto WHERE id_projeto = ".$rs['id_projeto'].";";
@@ -116,13 +145,7 @@ function rpgeral($dominio, $app){
 	return $app['twig']->render('page_projeto_d_visualizar.html',array("p"=>$rs,"ts"=>$ts,"is"=>$is));
 }
 
-$projeto->match('/{dominio}/sprints', function($dominio) use($app) {	
-	$p = rproj($dominio);
-	return $app['twig']->render('page_projeto_d_sprints.html',array("p"=>$p));
-})
-->before($protector)
-->before($auzeitor);
-
+//TEMPLATE - ainda em versão de desenvolvimento
 $projeto->match('/{dominio}/quadro', function($dominio) use($app) {	
 	$p = rproj($dominio);
 	return $app['twig']->render('page_projeto_d_quadro.html',array("p"=>$p));
@@ -199,6 +222,7 @@ function rproj($dominio){
 require("projeto_membros.php");
 require("projeto_backlog.php");
 require("projeto_releases.php");
+require("projeto_sprints.php");
 require("projeto_relatorios.php");
 require("projeto_configuracoes.php");
 

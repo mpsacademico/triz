@@ -17,7 +17,7 @@
 				{% for r in res %}
 			  <a href="/projeto/{{r.dominio}}/releases#{{r.dt_entrega|date('d-m-Y')}}" class="list-group-item list-group-item-danger">
 				<h4 class="list-group-item-heading">Release do <span class="text-uppercase">{{r.dominio}}</span> para hoje <small>{#({{r.dt_entrega|date("d/m/Y")}})#}</small></h4>
-				<p class="list-group-item-text">{{r.titulo}}</p>	
+				<p class="list-group-item-text">{{r.rtitulo}}</p>	
 			  </a>
 				{% endfor %}
 				{% if cs is not empty %}
@@ -26,16 +26,7 @@
 				<p class="list-group-item-text">Observe a seção de convites</p>	
 			  </a>
 				{% endif %}
-			</div>
-			<strong>Tarefas em andamento</strong>
-			<div class="list-group">
-				{% for p in ps %}
-			  <a href="/projeto/{{p.dominio}}" class="list-group-item">
-				<h4 class="list-group-item-heading">{{p.titulo}}</h4>				
-				<p class="list-group-item-text">{{p.resumo}}</p>				
-			  </a>
-				{% endfor %}
-			</div>
+			</div>			
 		</div>
 		<div class="col-lg-4">
 			<strong>Projetos que você participa</strong>

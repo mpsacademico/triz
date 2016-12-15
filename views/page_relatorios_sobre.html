@@ -1,0 +1,41 @@
+{% extends "inc/base_simples.html" %}
+
+{% block title %}Sobre o {{p.dominio}}{% endblock %}
+{% block titleheader %}{{p.titulo}}{% endblock %}
+
+{% block main %}
+<div class="container-fluid">		
+	<div class="row">
+		<div class="col-lg-12">
+		
+		<div>
+			<p class="lead">{{p.resumo}}</p>
+			<p>
+				{{p.descricao}}	
+			</p>
+		</div>		
+		<div>
+		<br>
+		<h4>Integrantes</h4>
+		<ul>
+		{% for u in is %}
+			
+				<li>{{u.nome}} {{u.sobrenome}} | {{u.ocupacao}} <em >{{u.funcao}}</em></li>				
+			 
+			{% endfor %}	  
+		 </ul>
+		
+			
+		</div>
+		<br>
+		<div>
+			<p>Tags: 
+			{% for t in ts %}
+				{{t.tag}},
+			{% endfor %}
+			</p>
+		</div>
+	</div>	
+	</div>
+</div>
+{% endblock %}

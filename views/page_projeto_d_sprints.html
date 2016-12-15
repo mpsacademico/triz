@@ -1,0 +1,45 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Sprints{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4 style="display:inline"><strong>Sprints</strong></h4>
+			{%if sa is empty%}
+			<a href="/projeto/{{p.dominio}}/sprints/iniciar" class="btn btn-xs btn-success active">Iniciar nova sprint</a>
+			{%else%}
+			<a href="/projeto/{{p.dominio}}/sprints/encerrar" class="btn btn-xs btn-danger active">Encerrar sprint atual</a>
+			{%endif%}
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">
+	{%if sa is not empty %}
+		<div class="list-group">				
+			  <a href="/projeto/{{p.dominio}}/sprints/atribuir/{{sa.id_sprint}}" class="list-group-item list-group-item-success active">
+				<p class="list-group-item-text"><small><strong>Código geral da sprint: {{sa.id_sprint}}</strong></small></p>
+				<h2 class="list-group-item-heading">SPRINT EM ANDAMENTO</h2>
+				<h4 class="list-group-item-heading"><span style="color:white"><strong>Início em {{sa.ts_inicio|date("d/m/Y")}}</strong></span></h4><p class="list-group-item-text"><small><em>Aberta a {{sa.dias}} dias</em></small></p>						
+			  </a>				
+		</div>
+	{%endif%}
+		<div class="list-group">	
+				{% for si in s %}
+			  <a href="/projeto/{{p.dominio}}/sprints/ver/{{si.id_sprint}}" class="list-group-item">
+				<p class="list-group-item-text"><small><strong>Código geral da sprint: {{si.id_sprint}}</strong></small></p>
+				<h4 class="list-group-item-heading"><span class="btn bg-success"><strong>{{si.ts_inicio|date("d/m/Y")}}</strong></span> <span class="btn bg-danger"><strong>{{si.ts_termino|date("d/m/Y")}}</strong></span> <!--<span class="btn bg-warning"><strong>Complexidade média:  <span class="badge">XX</span></strong></span> <span class="btn bg-warning"><strong>Total da estimativa:  <span class="badge">XX</span></strong></span>--></p>
+				<h4 class="list-group-item-heading"></h4>
+				<p class="list-group-item-text"><small><em>Duração de {{si.dias}} dias</em></small></p>				
+			  </a>		   
+				{% endfor %}
+		</div></div>
+	</div>
+</div>
+{% endblock %}

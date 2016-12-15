@@ -41,6 +41,7 @@ $app->match('/', function () use ($app) {
 	$pts = array();
 	$ps = array();
 	$res = array();
+	$cs = array();
 	if (null === $user = $app['session']->get('conta_usuario')){
 		return $app['twig']->render('page_inicio.html');
 	}else{	
@@ -48,7 +49,7 @@ $app->match('/', function () use ($app) {
 			$usuario = $app['session']->get('conta_usuario');
 			$id_conta_usuario = $usuario['id_conta_usuario'];
 			$conn = nconn();
-			$sql = "SELECT * FROM tz_release AS re, tz_projeto AS pr WHERE re.id_projeto = pr.id_projeto AND re.dt_entrega = CURDATE() AND re.id_projeto IN (SELECT p.id_projeto FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND c.id_convidado = $id_conta_usuario AND c.estado = 2);";
+			$sql = "SELECT *,re.titulo AS rtitulo FROM tz_release AS re, tz_projeto AS pr WHERE re.id_projeto = pr.id_projeto AND re.dt_entrega = CURDATE() AND re.id_projeto IN (SELECT p.id_projeto FROM tz_integrante AS i, tz_convite AS c, tz_projeto AS p WHERE i.id_convite = c.id_convite AND c.id_projeto = p.id_projeto AND i.estado = 1 AND c.id_convidado = $id_conta_usuario AND c.estado = 2);";
 			$stmt = $conn->prepare($sql);
 			$e = $stmt->execute();	
 			$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,7 +65,7 @@ $app->match('/', function () use ($app) {
 			$sql = "SELECT * FROM tz_projeto WHERE estado = 0 AND id_conta_usuario = $id_conta_usuario;";
 			$stmt = $conn->prepare($sql);			
 			$stmt->execute();				
-			$ps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$ps = $stmt->fetchAll(PDO::FETCH_ASSOC);						
 		}catch(PDOException $ex){
 			echo "Erro: " . $ex->getMessage();
 		}		
@@ -179,7 +180,7 @@ $app->match('/sair', function () use ($app) {
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {	
 	if($app['debug']==true){
-		return;
+		//return;
 	}
     switch ($code) {
         case 404:

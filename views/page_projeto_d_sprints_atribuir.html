@@ -1,0 +1,56 @@
+{% extends "inc/base_projeto.html" %}
+
+{% block title %}Sprints{% endblock %}
+{% block titleheader %}
+
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header">
+			<h4><strong>Sprints</strong></h4>
+		</div>
+	</div>
+</div>
+<div class="row">	
+	<div class="col-lg-12">	
+		<ol class="breadcrumb">
+		  <li><a href="">Sprints</a></li>		  
+		  <li class="active">Atribuir Histórias a Sprint</li>
+		</ol>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-6">
+		<h4><strong>Histórias disponíveis para atribuição</strong></h4>
+			{%for h in hs%}
+		<div class="list-group">
+		<a href="/projeto/{{p.dominio}}/sprints/atribuir/{{sprint}}/{{h.id_historia}}" class="list-group-item">
+		
+			<p><small class="text-muted">Por {{h.nome}} em {{h.ts_criacao|date("d/m/Y \\à\\s H:i")}}</small></p>
+			<p class="lead">{{h.descricao}}</p>	
+			<p><!--<a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | -->Complexidade: <span class="badge">{{h.complexidade}}</span> | Estimativa : <span class="badge">{{h.estimativa}}</span></p>
+		 
+		</a>
+		</div>
+		{%endfor%}
+	</div>
+	<div class="col-lg-6">
+		<h4><strong>Histórias atribuídas a Sprint {{sprint}}</strong></h4>
+			{%for h in hsprint%}
+		<div class="list-group">
+		<a href="/projeto/{{p.dominio}}/backlog/historia/{{h.id_historia}}" class="list-group-item list-group-item-{%if h.e==0%}info{%else%}success{%endif%}">
+		{{h.e}}
+		
+			<p><small class="text-muted">Por {{h.nome}} em {{h.ts_criacao|date("d/m/Y \\à\\s H:i")}}</small></p>
+			<p class="lead">{{h.descricao}}</p>	
+			<p><!--<a href="/projeto/p.dominio/backlog" class="btn btn-info btn-xs active">Em andamento</a> | -->Complexidade: <span class="badge">{{h.complexidade}}</span> | Estimativa : <span class="badge">{{h.estimativa}}</span></p>
+		 
+		</a>
+		</div>
+		{%endfor%}
+	</div>
+</div>
+
+{% endblock %}
