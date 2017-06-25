@@ -23,6 +23,33 @@ O desenvolvimento de software requer uma abordagem sistematizada e dinâmica. A 
 - XAMPP, Composer, Astah Community e MySQL Workbench
 - Bootstrap, TWIG, Silex
 
+## Execução do Projeto
+
+### Ambiente de Desenvolvimento
+
+Executar o seguinte comando dentro do diretório Triz:
+
+`php -S localhost:8080 web/index.php`
+
+### Ambiente Operacional
+
+Incluir o arquivo `.htaccess` no diretório raiz:
+
+```
+<IfModule mod_rewrite.c>
+    Options -MultiViews    
+    RewriteEngine On
+    RewriteBase /web
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+```
+
+### Dependências
+
+`triz/vendor` - framework e bibliotecas externas  
+`localhost/static` - arquivos CSS, scripts Javascript e imagens
+
 ## Discussão dos Resultados
 Com este trabalho, concebeu-se uma ferramenta CASE denominada Triz, que busca auxiliar efetivamente a pequenas e médias equipes alcançarem melhores rendimentos em seus projetos, através de um ambiente intuitivo e agradável para o gerenciamento de tarefas e responsabilidades. E, consequentemente, alcançar projetos e produtos com mais qualidade.  
 
