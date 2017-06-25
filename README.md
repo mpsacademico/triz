@@ -23,6 +23,17 @@ O desenvolvimento de software requer uma abordagem sistematizada e dinâmica. A 
 - XAMPP, Composer, Astah Community e MySQL Workbench
 - Bootstrap, TWIG, Silex
 
+## Paleta de Cores
+
+- ![#F02E17](https://placehold.it/15/F02E17/000000?text=+) `#F02E17` logotipo Triz
+- ![#dc2430](https://placehold.it/15/dc2430/000000?text=+) `#dc2430` gradiente principal I
+- ![#7b4397](https://placehold.it/15/7b4397/000000?text=+) `#7b4397` gradiente principal II
+- ![#FDCD51](https://placehold.it/15/FDCD51/000000?text=+) `#FDCD51` ícone de usuário padrão
+- ![#FEEAB9](https://placehold.it/15/FEEAB9/000000?text=+) `#FEEAB9` fundo do ícone de usuário 
+- ![#FBFBFB](https://placehold.it/15/FBFBFB/000000?text=+) `#FBFBFB` fundos de quadros diversos
+- ![#27AE60](https://placehold.it/15/27AE60/000000?text=+) `#27AE60` indicação de ação positiva
+
+
 ## Execução do Projeto
 
 ### Ambiente de Desenvolvimento
