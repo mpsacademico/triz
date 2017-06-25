@@ -10,3 +10,38 @@ O desenvolvimento de software requer uma abordagem sistematizada e dinâmica. A 
 
 **Marcos Paulo da Silva**  
 *Analista de Sistemas*
+
+## Referências
+
+BARRUCHO, L. G. IBGE: Metade dos brasileiros estão conectados à internet; Norte lidera em acesso por celular. 2015. Disponível em:
+<http://www.bbc.com/portuguese/noticias/2015/04/150429_divulgacao_pnad_ibge_lgb>. Acesso em: 12 out. 2015.
+
+BRASIL. Ministério da Ciência Tecnologia e Inovação. Secretaria de Política de Informática. A História da Tahini-Tahini: Melhoria de Processos de Software com Métodos Ágeis e Modelo MPS. 9. ed. Brasília: [s.n.], 2013. Disponível em: <http://www.mct.gov.br/upd_blob/0228/228094.pdf>. Acesso em: 5 set. 2016.
+
+______. Ministério da Ciência e Tecnologia. Secretaria de Política de Informática. Pesquisa de Qualidade no Setor de Software Brasileiro 2009. [S.l.: s.n., 2010]. Disponível em: <http://www.mct.gov.br/upd_blob/0214/214567.pdf>. Acesso em: 10 out. 2016.
+
+CARVALHO, B. V. de; MELLO, C. H. P. Aplicação do método ágil scrum no desenvolvimento de produtos de software em uma pequena empresa de base tecnológica. Gest. Prod., São Carlos, v. 19, n. 3, p. 557-573, 2012. Disponível em: <http://www.scielo.br/scielo.php?script=sci_arttext&pid=S0104-530X2012000300009&lng=en&nrm=iso>. Acesso em: 18 out. 2016. http://dx.doi.org/10.1590/S0104-530X2012000300009.
+
+COCKBURN, A. et al. Manifesto para o desenvolvimento ágil de software. 2001. Disponível em: <http://www.manifestoagil.com.br/>. Acesso em: 21 nov. 2016.
+
+FERNANDES, A. A.; TEIXEIRA, D. de S. Fábrica de Software. São Paulo: Atlas, 2004.
+
+GOMES, A. F. Agile: desenvolvimento de software com entregas frequentes e foco no valor de negócio. São Paulo: Casa do Código, 2013.
+
+MAXIMIANO, A. C. A. Administração de Projetos: Como Transformar Idéias em Resultados. 2. ed. São Paulo: Atlas, 2006.
+
+PHILLIPS, J. Gerência de Projetos de Tecnologia da Informação. 6. ed. Rio de Janeiro: Elsevier, 2003.
+
+PRESSMAN, R. S. Engenharia de software. 6.ed. Porto Alegre: Bookman, 2006.
+
+REZENDE, D. A. Engenharia de software e sistemas de informação. 3.ed. Rio de Janeiro:
+Brasport, 2005.
+
+SABBAGH, R. Scrum: gestão ágil para projetos de sucesso. São Paulo: Casa do Código, 2013.
+
+SEVERINO, A. J. Metodologia do trabalho científico. 23. ed. rev. e atual. São Paulo: Cortez Editora, 2007.
+
+SOMMERVILLE, I. Engenharia de software.8. ed. São Paulo: Pearson Addison-Wesley,
+2007.
+
+SUTHERLAND, J. Scrum: a arte de fazer o dobro na metade do tempo. São Paulo: LeYa, 2014.
