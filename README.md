@@ -10,6 +10,14 @@ O desenvolvimento de software requer uma abordagem sistematizada e dinâmica. A 
 
 *A software development program requires a systematic and dynamic approach. The difficulty in reconciling these factors can lead to problems related to time and costs. This project proposes a CASE tool that assists a management process efficiently and effectively. The application has been programmed on the web with responsive design, through the languages HTML, CSS, PHP and SQL. The development methodology was Scrum. The project was submitted to a version control and testing. The result achieved is the online application Triz. It is expected thereby the decrease of the failure rate in the projects and the increase of the quality of the software programs produced. Besides of this it familiarizes small and medium teams with the systematization of the tasks and responsibilities. In it was used other concepts of management and Software Engineering*
 
+## Linguagens, Ferramentas e Bibliotecas
+
+- HTML, CSS, PHP e SQL (MySQL)
+- Editor de texto básico, Navegadores e Trello
+- XAMPP, Composer, Astah Community e MySQL Workbench
+- Bootstrap, TWIG, Silex
+
+
 ## Referências
 
 BARRUCHO, L. G. **IBGE:** Metade dos brasileiros estão conectados à internet; Norte lidera em acesso por celular. 2015. Disponível em:
