@@ -59,6 +59,10 @@ Incluir o arquivo `.htaccess` no diretório raiz:
 `triz/vendor` - framework e bibliotecas externas  
 `localhost/static` - arquivos CSS, scripts Javascript e imagens
 
+## Releases
+
+[v1.0.0.0 - Entrega da codificação final para a banca avaliadora do trabalho de graduação](https://github.com/mpsacademico/triz/releases/tag/v1.0.0.0)
+
 ## Discussão dos Resultados
 Com este trabalho, concebeu-se uma ferramenta CASE denominada Triz, que busca auxiliar efetivamente a pequenas e médias equipes alcançarem melhores rendimentos em seus projetos, através de um ambiente intuitivo e agradável para o gerenciamento de tarefas e responsabilidades. E, consequentemente, alcançar projetos e produtos com mais qualidade.  
 
