@@ -23,6 +23,10 @@ O desenvolvimento de software requer uma abordagem sistematizada e dinâmica. A 
 - XAMPP, Composer, Astah Community e MySQL Workbench
 - Bootstrap, TWIG, Silex
 
+## Discussão dos Resultados
+Com este trabalho, concebeu-se uma ferramenta CASE denominada Triz, que busca auxiliar efetivamente a pequenas e médias equipes alcançarem melhores rendimentos em seus projetos, através de um ambiente intuitivo e agradável para o gerenciamento de tarefas e responsabilidades. E, consequentemente, alcançar projetos e produtos com mais qualidade.  
+
+Espera-se com isso, fornecer um meio para a diminuição do índice de fracasso de projetos e aumento da qualidade de softwares produzidos. Além de familiarizar pequenas e médias equipes com a sistematização de tarefas e responsabilidades, bem como com outros conceitos de gerência e Engenharia de Software.
 
 ## Referências
 
